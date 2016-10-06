@@ -1,0 +1,60 @@
+{
+  "name": "@thewhodidthis/ottox",
+  "version": "0.0.0",
+  "description": "Calculate elementary celullar automata in the one dimension",
+  "keywords": [
+    "automata",
+    "canvas",
+    "cellular"
+  ],
+  "main": "index.js",
+  "homepage": "https://github.com/thewhodidthis/ottox#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thewhodidthis/ottox.git"
+  },
+  "bugs": {
+    "url": "https://github.com/thewhodidthis/ottox/issues"
+  },
+  "directories": {
+    "example": "example"
+  },
+  "config": {
+    "jscsrc": ".jscsrc",
+    "remote": "thewhodidthis@umfufu:www/example/ottox/"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "clear": "npm run clear:dist && npm run clear:logs",
+    "clear:dist": "rm -rf dist/",
+    "clear:logs": "rm -f *.log",
+    "lint": "(jshint index.js & jscs index.js --reporter=inlinesingle) 2>&1 | tee lint-js.log",
+    "postlint": "find lint-js.log -size 0 -print0 | xargs -0 rm",
+    "start": "npm run watch",
+    "watch": "nodemon -e js -w index.js -x 'npm run build'",
+    "preexample": "npm run build",
+    "example": "npm run example:link && npm run example:serve",
+    "example:link": "ln -siv \"$(pwd)/dist/ottox.js\" example",
+    "example:push": "rsync -avruzLPC --exclude=.DS_Store ./example/ $npm_package_config_remote",
+    "example:serve": "php -S localhost:8000 -t example/",
+    "prebuild": "mkdir -p dist/",
+    "build": "browserify index.js -s Ottox -o ./dist/ottox.js",
+    "build:min": "browserify index.js -s Ottox | uglifyjs -mc -o ./dist/ottox.min.js",
+    "postbuild": "npm run build:min",
+    "preversion": "npm run clear && npm run build"
+  },
+  "engines": {
+    "node": ">=4.2.4",
+    "npm": ">=3.5.3"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "jscs": "latest",
+    "jshint": "latest",
+    "uglify-js": "latest",
+    "browserify": "latest",
+    "nodemon": "latest"
+  },
+  "author": "sChzs BkgNns <sotirios.bakagiannis@gmail.com> (https://www.thewhodidthis.com)",
+  "license": "Unlicense"
+}
