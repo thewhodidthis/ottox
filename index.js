@@ -1,20 +1,13 @@
 'use strict';
 
-function Ottox(options, size) {
-  var settings = Object.create(Ottox.defaults);
+function Ottox() {
+  var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var size = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
 
-  if (options !== null) {
-    if (typeof options === 'object') {
-      for (var prop in settings) {
-        if (options.hasOwnProperty(prop)) {
-          settings[prop] = options[prop];
-        }
-      }
-    }
+  var settings = Object.assign({}, Ottox.defaults, options);
 
-    if (typeof options === 'number') {
-      settings.rule = parseInt(options, 10);
-    }
+  if (typeof options === 'number') {
+    settings.rule = parseInt(options, 10);
   }
 
   if (size !== null && typeof size === 'number') {
@@ -37,15 +30,20 @@ function Ottox(options, size) {
 Ottox.prototype = {
   constructor: Ottox,
 
+  flip: function flip(x) {
+    var index = parseInt(x, 10);
+
+    this.grid[index] = !this.grid[index];
+  },
   next: function next(prev) {
-    var prev = (prev && prev.length) ? prev : this.grid;
-    var size = prev.length;
-    var next = [];
+    var grid = prev && prev.length ? prev : this.grid;
+    var size = grid.length;
+    var next = new Uint8Array(size);
 
     for (var i = 0; i < size; i += 1) {
-      var l = (i - 1 >= 0) ? prev[i - 1] : prev[0];
-      var c = prev[i];
-      var r = (i + 1 <= prev.length - 1) ? prev[i + 1] : prev[prev.length - 1];
+      var l = i - 1 >= 0 ? grid[i - 1] : grid[0];
+      var c = grid[i];
+      var r = i + 1 <= grid.length - 1 ? grid[i + 1] : grid[grid.length - 1];
 
       next[i] = this.getState(l, c, r);
     }
@@ -55,32 +53,24 @@ Ottox.prototype = {
 
     return next;
   },
-
-  flip: function(x) {
-    var x = x | 0;
-
-    return this.grid[x] = !this.grid[x] | 0;
-  },
-
   getState: function getState(l, c, r) {
-    return this.rule[parseInt('' + l + c + r, 2)] | 0;
+    return this.rule[parseInt('' + l + c + r, 2)];
   },
-
   setRule: function setRule(target) {
-    return this.rule = this.parseRule(target);
+    this.rule = this.parseRule(target);
   },
-
   parseRule: function parseRule(target) {
+    var output = target.toString(2);
 
     // http://stackoverflow.com/questions/9909038/formatting-hexadecimal-number-in-javascript
-    return ('000000000' + target.toString(2)).substr(-8).split('').reverse();
+    return ('000000000' + output).substr(-8).split('').reverse();
   }
 };
 
 Ottox.defaults = {
   zoom: 0,
   rule: 90,
-  size: 10,
+  size: 10
 };
 
 module.exports = Ottox;
