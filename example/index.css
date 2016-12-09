@@ -8,6 +8,11 @@ figure {
   margin: 0;
 }
 
+noscript {
+  margin: 6px;
+  font: italic 12px/28px arial, sans-serif;
+}
+
 ul {
   padding: 0;
   margin: auto;
