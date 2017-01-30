@@ -1,6 +1,6 @@
 {
   "name": "@thewhodidthis/ottox",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Calculate elementary celullar automata in the one dimension",
   "keywords": [
     "automata",
