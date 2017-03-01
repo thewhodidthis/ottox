@@ -1,8 +1,8 @@
-## Ottox
-> Helps calculate elementary one dimensional cellular automata
+## Otto
+> Helps deal with elementary CAs
 
 ### Setup
 ```sh
-npm install ottox --save
+npm install thewhodidthis/otto
 ```
 
