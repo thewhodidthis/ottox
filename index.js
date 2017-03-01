@@ -1,76 +1,52 @@
 'use strict';
 
-function Ottox() {
-  var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-  var size = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+var Otto = function Otto() {
+  var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+      _ref$span = _ref.span,
+      span = _ref$span === undefined ? 1 : _ref$span,
+      _ref$size = _ref.size,
+      size = _ref$size === undefined ? 0 : _ref$size,
+      _ref$rule = _ref.rule,
+      rule = _ref$rule === undefined ? 90 : _ref$rule;
 
-  var settings = Object.assign({}, Ottox.defaults, options);
+  // Cells
+  var _grid = new Uint8Array(size);
 
-  if (typeof options === 'number') {
-    settings.rule = parseInt(options, 10);
-  }
+  // Lookup table
+  var ruleset = rule.toString(2).split('').reverse();
 
-  if (size !== null && typeof size === 'number') {
-    settings.size = parseInt(size, 10);
-  }
+  // Wrap index round edges
+  // http://stackoverflow.com/questions/1082917/mod-of-negative-number-is-melting-my-brain/1082938#1082938
+  var getIndex = function getIndex(a, b) {
+    return a - b * Math.floor(a / b);
+  };
 
-  // Generation
-  this.zoom = Math.max(parseInt(settings.zoom, 10), 0);
+  // Calculate state
+  var getState = function getState(v, i, arr) {
+    var state = [];
 
-  // Cells array
-  this.grid = new Uint8Array(settings.size);
+    // The neighborhood
+    for (var j = -span; j <= span; j += 1) {
+      var x = getIndex(i + j, arr.length);
+      var n = arr[x] || 0;
 
-  // Rule byte string
-  this.rule = this.parseRule(settings.rule);
-
-  // Flip cell in the middle
-  this.flip(settings.size * 0.5);
-}
-
-Ottox.prototype = {
-  constructor: Ottox,
-
-  flip: function flip(x) {
-    var index = parseInt(x, 10);
-
-    this.grid[index] = !this.grid[index];
-  },
-  next: function next(prev) {
-    var grid = prev && prev.length ? prev : this.grid;
-    var size = grid.length;
-    var next = new Uint8Array(size);
-
-    for (var i = 0; i < size; i += 1) {
-      var l = i - 1 >= 0 ? grid[i - 1] : grid[0];
-      var c = grid[i];
-      var r = i + 1 <= grid.length - 1 ? grid[i + 1] : grid[grid.length - 1];
-
-      next[i] = this.getState(l, c, r);
+      state.push(n);
     }
 
-    this.zoom = this.zoom + 1;
-    this.grid = next;
+    return ruleset[parseInt(state.join(''), 2)];
+  };
 
-    return next;
-  },
-  getState: function getState(l, c, r) {
-    return this.rule[parseInt('' + l + c + r, 2)];
-  },
-  setRule: function setRule(target) {
-    this.rule = this.parseRule(target);
-  },
-  parseRule: function parseRule(target) {
-    var output = target.toString(2);
+  // Flip cell in the middle
+  _grid[Math.floor(size * 0.5)] = 1;
 
-    // http://stackoverflow.com/questions/9909038/formatting-hexadecimal-number-in-javascript
-    return ('000000000' + output).substr(-8).split('').reverse();
-  }
+  return {
+    next: function next() {
+      return _grid.set(_grid.map(getState));
+    },
+    grid: function grid() {
+      return _grid;
+    }
+  };
 };
 
-Ottox.defaults = {
-  zoom: 0,
-  rule: 90,
-  size: 10
-};
-
-module.exports = Ottox;
+module.exports = Otto;
