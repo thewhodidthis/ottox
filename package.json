@@ -32,6 +32,7 @@
     "clear:logs": "rm -f *.log",
     "lint": "eslint index.es; exit 0",
     "start": "npm run clear && npm run build",
+    "docs": "docco -l ivory -e .js index.es",
     "preexample": "npm start",
     "example": "npm run example:link && npm run example:serve",
     "example:link": "ln -siv \"$(pwd)/dist/otto.min.js\" example/otto.js",
