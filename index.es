@@ -1,75 +1,37 @@
-function Ottox(options = {}, size = 0) {
-  const settings = Object.assign({}, Ottox.defaults, options);
+const Otto = ({ span = 1, size = 0, rule = 90 } = {}) => {
+  // Cells
+  const grid = new Uint8Array(size);
 
-  if (typeof options === 'number') {
-    settings.rule = parseInt(options, 10);
-  }
+  // Lookup table
+  const ruleset = rule.toString(2).split('').reverse();
 
-  if (size !== null && typeof size === 'number') {
-    settings.size = parseInt(size, 10);
-  }
+  // Wrap index round edges
+  // http://stackoverflow.com/questions/1082917/mod-of-negative-number-is-melting-my-brain/1082938#1082938
+  const getIndex = (a, b) => a - (b * Math.floor(a / b));
 
-  // Generation
-  this.zoom = Math.max(parseInt(settings.zoom, 10), 0);
+  // Calculate state
+  const getState = (v, i, arr) => {
+    const state = [];
 
-  // Cells array
-  this.grid = new Uint8Array(settings.size);
+    // The neighborhood
+    for (let j = -span; j <= span; j += 1) {
+      const x = getIndex(i + j, arr.length);
+      const n = arr[x] || 0;
 
-  // Rule byte string
-  this.rule = this.parseRule(settings.rule);
-
-  // Flip cell in the middle
-  this.flip(settings.size * 0.5);
-}
-
-Ottox.prototype = {
-  constructor: Ottox,
-
-  flip(x) {
-    const index = parseInt(x, 10);
-
-    this.grid[index] = !this.grid[index];
-  },
-
-  next(prev) {
-    const grid = (prev && prev.length) ? prev : this.grid;
-    const size = grid.length;
-    const next = new Uint8Array(size);
-
-    for (let i = 0; i < size; i += 1) {
-      const l = (i - 1 >= 0) ? grid[i - 1] : grid[0];
-      const c = grid[i];
-      const r = (i + 1 <= grid.length - 1) ? grid[i + 1] : grid[grid.length - 1];
-
-      next[i] = this.getState(l, c, r);
+      state.push(n);
     }
 
-    this.zoom = this.zoom + 1;
-    this.grid = next;
+    return ruleset[parseInt(state.join(''), 2)];
+  };
 
-    return next;
-  },
+  // Flip cell in the middle
+  grid[Math.floor(size * 0.5)] = 1;
 
-  getState(l, c, r) {
-    return this.rule[parseInt(`${l}${c}${r}`, 2)];
-  },
-
-  setRule(target) {
-    this.rule = this.parseRule(target);
-  },
-
-  parseRule(target) {
-    const output = target.toString(2);
-
-    // http://stackoverflow.com/questions/9909038/formatting-hexadecimal-number-in-javascript
-    return (`000000000${output}`).substr(-8).split('').reverse();
-  }
+  return {
+    next: () => grid.set(grid.map(getState)),
+    grid: () => grid,
+  };
 };
 
-Ottox.defaults = {
-  zoom: 0,
-  rule: 90,
-  size: 10,
-};
+export default Otto;
 
-export default Ottox;
