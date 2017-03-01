@@ -10,8 +10,8 @@ export default {
       format: 'iife',
       indent: true,
       sourceMap: true,
-      moduleName: 'Ottox',
-      dest: 'dist/ottox.js'
+      moduleName: 'Otto',
+      dest: 'dist/otto.js'
     },
     {
       format: 'cjs',
