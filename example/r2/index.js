@@ -56,10 +56,6 @@ rules.forEach((rule, i) => {
   ottos.push(otto);
 });
 
-document.addEventListener('click', function (e) {
-  window.location = window.location.origin + '/d2';
-});
-
 window.addEventListener('load', function(e) {
   frameId = window.requestAnimationFrame(frame);
 }, false);

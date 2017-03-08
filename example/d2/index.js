@@ -48,10 +48,6 @@ if (window !== window.top) {
 
 label.innerHTML = rule;
 
-document.addEventListener('click', function (e) {
-  window.location = window.location.origin;
-});
-
 window.addEventListener('load', function(e) {
   frameId = window.requestAnimationFrame(frame);
 }, false);
