@@ -1,36 +1,62 @@
-const Otto = ({ span = 1, size = 0, rule = 90 } = {}) => {
-  // Cells
-  const grid = new Uint8Array(size);
+// # Otto
+// Helps deal with CAs
 
-  // Lookup table
-  const ruleset = rule.toString(2).split('').reverse();
+// Wrap index round edges
+// http://stackoverflow.com/questions/1082917/mod-of-negative-number-is-melting-my-brain
+const mod = (a, b) => a - (b * Math.floor(a / b));
+const sum = (a, b) => a + b;
+const glu = (a, b, i) => a | (b << i);
 
-  // Wrap index round edges
-  // http://stackoverflow.com/questions/1082917/mod-of-negative-number-is-melting-my-brain/1082938#1082938
-  const getIndex = (a, b) => a - (b * Math.floor(a / b));
+const Otto = ({ rule = 90, rows = 1, cols = 1, span = 1 } = {}) => {
+  // Grid size
+  const area = rows * cols;
+
+  // The neighborhood, store distance from each neighbor
+  const hood = rows > 1 ? [0, cols, -cols, 1, -1] : ((arr) => {
+    for (let i = 0, max = 1 + (2 * span); i < max; i += 1) {
+      arr.push(span - i);
+    }
+
+    return arr;
+  })([]);
+
+  // Decide type of sum
+  const getSum = rows > 1 ? sum : glu;
 
   // Calculate state
   const getState = (v, i, arr) => {
-    const state = [];
+    const state = hood.map((diff) => {
+      const site = mod(diff + i, arr.length);
+      const flag = arr[site];
 
-    // The neighborhood
-    for (let j = -span; j <= span; j += 1) {
-      const x = getIndex(i + j, arr.length);
-      const n = arr[x] || 0;
+      // Just works :)
+      return (diff === 0 && flag === 1 && rows > 1) ? hood.length : flag;
+    }).reduce(getSum);
 
-      state.push(n);
-    }
-
-    return ruleset[parseInt(state.join(''), 2)];
+    return rule & (1 << state) ? 1 : 0;
   };
 
-  // Flip cell in the middle
-  grid[Math.floor(size * 0.5)] = 1;
+  // Cells, zero filled
+  let memo = new Int8Array(area);
 
-  return {
-    next: () => grid.set(grid.map(getState)),
-    grid: () => grid,
-  };
+  // Result
+  let grid;
+
+  return ((seed) => {
+    // Flip cell in middle on init
+    memo[seed] = 1;
+
+    return () => {
+      // Update
+      grid = memo;
+
+      // Save for later
+      memo = grid.map(getState);
+
+      // The previous generation
+      return grid;
+    };
+  })(Math.floor(area * 0.5));
 };
 
 export default Otto;
