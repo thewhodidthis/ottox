@@ -26,7 +26,7 @@
   "scripts": {
     "pretest": "rollup -c",
     "test": "node test",
-    "clear": "npm run clear:dist && npm run clear:docs && npm run clear:logs",
+    "clear": "npm run clear:dist && npm run clear:logs",
     "clear:dist": "rm -rf dist/",
     "clear:docs": "rm -rf docs/",
     "clear:logs": "rm -f *.log",
