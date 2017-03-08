@@ -3,15 +3,14 @@
 var html = document.documentElement;
 
 var label = document.getElementById('label');
-var items = document.getElementsByTagName('li');
 var plots = document.getElementsByTagName('canvas');
 
-var rules = [30, 99, 210, 110, 118, 182];
+var rules = [2123739367, 988197457, 2530535241, 404545713, 1931232828, 2713874006];
 var ottos = [];
 
 var cols = 179;
 var rows = 1;
-var span = 1;
+var span = 2;
 
 var framesN = cols;
 var frameId;
@@ -27,9 +26,9 @@ var frame = function frame() {
       var y = frameId - 1;
 
       if (grid[j]) {
-        plot.fillStyle = 'white';
-      } else {
         plot.fillStyle = 'black';
+      } else {
+        plot.fillStyle = 'white';
       }
 
       plot.fillRect(x, y, 1, 1);
@@ -54,15 +53,14 @@ label.innerHTML = rules.join(', ');
 rules.forEach((rule, i) => {
   var otto = Otto({ rule, cols, rows, span });
 
-  items[i].setAttribute('data-rule', rule);
   ottos.push(otto);
 });
 
 document.addEventListener('click', function (e) {
-  window.location = window.location.origin + '/r2';
+  window.location = window.location.origin + '/d2';
 });
 
-window.addEventListener('load', function (e) {
+window.addEventListener('load', function(e) {
   frameId = window.requestAnimationFrame(frame);
 }, false);
 
