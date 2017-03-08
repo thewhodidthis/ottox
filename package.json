@@ -1,6 +1,6 @@
 {
   "name": "@thewhodidthis/otto",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Helps deal with elementary CAs",
   "keywords": [
     "automata",
