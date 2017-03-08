@@ -3,7 +3,7 @@
 var html = document.documentElement;
 
 var label = document.getElementById('label');
-var rules = [30, 50, 90, 146, 110, 621];
+var rules = [30, 50, 90, 146, 130, 186];
 
 var seed = Math.floor(Math.random() * rules.length);
 var rule = rules[seed];
@@ -14,7 +14,7 @@ var span = 1;
 var plot = document.querySelector('canvas').getContext('2d');
 var otto = Otto({ rule, cols, rows, span });
 
-var framesN = (139 / rows) + 50;
+var framesN = (140 / rows) + 39;
 var frameId;
 
 var frame = function frame(r) {
@@ -25,12 +25,12 @@ var frame = function frame(r) {
     var y = Math.floor(j / rows);
 
     if (grid[j]) {
-      plot.fillStyle = 'black';
-    } else {
       plot.fillStyle = 'white';
+    } else {
+      plot.fillStyle = 'black';
     }
 
-    plot.fillRect(x, y, 2, 2);
+    plot.fillRect(x, y, 1, 1);
   }
 
   if (frameId > framesN) {
