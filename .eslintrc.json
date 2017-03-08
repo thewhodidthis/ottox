@@ -4,6 +4,7 @@
     "browser": true
   },
   "rules": {
-    "comma-dangle": 1
+    "comma-dangle": 1,
+    "no-bitwise": 1
   }
 }
