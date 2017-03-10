@@ -4,78 +4,91 @@ var Otto = (function () {
   // # Otto
   // Helps deal with CAs
 
-  // Wrap index round edges
-  // http://stackoverflow.com/questions/1082917/mod-of-negative-number-is-melting-my-brain
-  var mod = function mod(a, b) {
+  // Wrap
+  var myMod = function myMod(a, b) {
     return a - b * Math.floor(a / b);
   };
-  var sum = function sum(a, b) {
-    return a + b;
+
+  // Int to bin in array form
+  var parseRule = function parseRule(rule) {
+    // To binary string
+    var code = rule.toString(2);
+
+    // Minimum of 10 digits here
+    var view = ('0000000000000000000000000000000' + code).substr(32 - code.length).split('').reverse();
+
+    return view;
   };
-  var glu = function glu(a, b, i) {
-    return a | b << i;
+
+  var otto = {
+    // Sensible defaults
+    size: 1,
+
+    // Sierpinski
+    rule: 90,
+
+    // Yer typical l, c, r
+    ends: [-1, 0, 1],
+
+    // Flip cell middle
+    seed: function seed(v, i, view) {
+      return i === Math.floor(view.length * 0.5);
+    },
+
+    // Ruleset index based lookup
+    stat: function stat(code, hood) {
+      var stats = parseInt(hood.join('').toString(2), 2);
+      var state = code[stats];
+
+      return state;
+    }
   };
 
-  var Otto = function Otto() {
-    var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
-        _ref$rule = _ref.rule,
-        rule = _ref$rule === undefined ? 90 : _ref$rule,
-        _ref$rows = _ref.rows,
-        rows = _ref$rows === undefined ? 1 : _ref$rows,
-        _ref$cols = _ref.cols,
-        cols = _ref$cols === undefined ? 1 : _ref$cols,
-        _ref$span = _ref.span,
-        span = _ref$span === undefined ? 1 : _ref$span;
+  var Otto = function Otto(opts) {
+    var _Object$assign = Object.assign({}, otto, opts),
+        size = _Object$assign.size,
+        rule = _Object$assign.rule,
+        ends = _Object$assign.ends,
+        stat = _Object$assign.stat,
+        seed = _Object$assign.seed;
 
-    // Grid size
-    var area = rows * cols;
+    // Ruleset
 
-    // The neighborhood, store distance from each neighbor
-    var hood = rows > 1 ? [0, cols, -cols, 1, -1] : function (arr) {
-      for (var i = 0, max = 1 + 2 * span; i < max; i += 1) {
-        arr.push(span - i);
-      }
 
-      return arr;
-    }([]);
-
-    // Decide type of sum
-    var getSum = rows > 1 ? sum : glu;
+    var code = parseRule(rule);
 
     // Calculate state
-    var getState = function getState(v, i, arr) {
-      var state = hood.map(function (diff) {
-        var site = mod(diff + i, arr.length);
-        var flag = arr[site];
+    var getState = function getState(v, i, view) {
+      var hood = ends.map(function (diff) {
+        var site = myMod(diff + i, view.length);
+        var flag = view[site];
 
-        // Just works :)
-        return diff === 0 && flag === 1 && rows > 1 ? hood.length : flag;
-      }).reduce(getSum);
+        return flag;
+      });
 
-      return rule & 1 << state ? 1 : 0;
+      return stat(code, hood, v);
     };
 
-    // Cells, zero filled
-    var memo = new Int8Array(area);
+    // Cells, zero filled, needs some more work to become of adjustable size
+    var next = new Uint8Array(size);
 
     // Result
     var grid = void 0;
 
-    return function (seed) {
-      // Flip cell in middle on init
-      memo[seed] = 1;
+    // Flip cell in middle on init
+    next = next.map(seed);
 
-      return function () {
-        // Update
-        grid = memo;
+    // Use this
+    return function () {
+      // Update
+      grid = next;
 
-        // Save for later
-        memo = grid.map(getState);
+      // Save for later
+      next = grid.map(getState);
 
-        // The previous generation
-        return grid;
-      };
-    }(Math.floor(area * 0.5));
+      // The previous generation
+      return grid;
+    };
   };
 
   return Otto;
