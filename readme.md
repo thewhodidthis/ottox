@@ -1,5 +1,5 @@
 ## Otto
-> Helps deal with elementary CAs
+> Helps deal CAs
 
 ### Setup
 ```sh
