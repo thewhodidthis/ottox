@@ -2,18 +2,13 @@
 
 var html = document.documentElement;
 
-var label = document.getElementById('label');
 var items = document.getElementsByTagName('li');
 var plots = document.getElementsByTagName('canvas');
 
 var rules = [30, 99, 210, 110, 118, 182];
 var ottos = [];
 
-var cols = 179;
-var rows = 1;
-var span = 1;
-
-var framesN = cols;
+var framesN = 179;
 var frameId;
 
 var frame = function frame() {
@@ -23,7 +18,7 @@ var frame = function frame() {
     var grid = otto();
 
     for (var j = 0; j < grid.length; j += 1) {
-      var x = j % cols;
+      var x = j % framesN;
       var y = frameId - 1;
 
       if (grid[j]) {
@@ -49,18 +44,17 @@ if (window !== window.top) {
   html.className += ' is-iframe';
 }
 
-label.innerHTML = rules.join(', ');
-
 rules.forEach((rule, i) => {
-  var otto = Otto({ rule, cols, rows, span });
+  var papa = {
+    rule: rule,
+    size: framesN,
+  };
+
+  var otto = Otto(papa);
 
   items[i].setAttribute('data-rule', rule);
   ottos.push(otto);
 });
-
-// document.addEventListener('click', function (e) {
-//   window.location = window.location.href + '/r2';
-// });
 
 window.addEventListener('load', function (e) {
   frameId = window.requestAnimationFrame(frame);
