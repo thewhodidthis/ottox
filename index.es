@@ -1,34 +1,33 @@
 // # Otto
-// Helps deal with CAs
+// Helps deal CAs
 
-// Wrap
+// Wrap index round edges
+// http://stackoverflow.com/questions/1082917/mod-of-negative-number-is-melting-my-brain
 const myMod = (a, b) => a - (b * Math.floor(a / b));
 
-// Int to bin in array form
+// Rule to binary convert
 const parseRule = (rule) => {
-  // To binary string
+  // Base 2 digits
   const code = rule.toString(2);
 
-  // Minimum of 10 digits here
+  // Zero pad ruleset
   const view = `0000000000000000000000000000000${code}`.substr(32 - code.length).split('').reverse();
 
   return view;
 };
 
-const otto = {
-  // Sensible defaults
+// Defaults
+const data = {
   size: 1,
+  rule: 30,
 
-  // Sierpinski
-  rule: 90,
-
-  // Yer typical l, c, r
+  // How far from center lie the neighbors
   ends: [-1, 0, 1],
 
-  // Flip cell middle
+  // Flip middle cell
   seed: (v, i, view) => i === Math.floor(view.length * 0.5),
 
-  // Ruleset index based lookup
+  // Index based lookup
   stat: (code, hood) => {
     const stats = parseInt(hood.join('').toString(2), 2);
     const state = code[stats];
@@ -37,16 +36,22 @@ const otto = {
   },
 };
 
+// Setup
 const Otto = (opts) => {
-  const { size, rule, ends, stat, seed } = Object.assign({}, otto, opts);
+  // Merge options and defaults
+  const { size, rule, ends, stat, seed } = Object.assign({}, data, opts);
 
-  // Ruleset
+  // Store ruleset
   const code = parseRule(rule);
 
   // Calculate state
   const getState = (v, i, view) => {
+    // Collect neighbors
     const hood = ends.map((diff) => {
+      // The index for each neighbor cell
       const site = myMod(diff + i, view.length);
+
+      // The state of each neighbor
       const flag = view[site];
 
       return flag;
@@ -55,16 +60,15 @@ const Otto = (opts) => {
     return stat(code, hood, v);
   };
 
-  // Cells, zero filled, needs some more work to become of adjustable size
+  // Clipboard, zero filled, need to work out adjustable size part
   let next = new Uint8Array(size);
 
-  // Result
+  // Store results
   let grid;
 
-  // Flip cell in middle on init
+  // Seed how on init
   next = next.map(seed);
 
-  // Use this
   return () => {
     // Update
     grid = next;
@@ -72,7 +76,7 @@ const Otto = (opts) => {
     // Save for later
     next = grid.map(getState);
 
-    // The previous generation
+    // The memo
     return grid;
   };
 };

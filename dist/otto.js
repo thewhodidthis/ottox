@@ -2,40 +2,39 @@ var Otto = (function () {
   'use strict';
 
   // # Otto
-  // Helps deal with CAs
+  // Helps deal CAs
 
-  // Wrap
+  // Wrap index round edges
+  // http://stackoverflow.com/questions/1082917/mod-of-negative-number-is-melting-my-brain
   var myMod = function myMod(a, b) {
     return a - b * Math.floor(a / b);
   };
 
-  // Int to bin in array form
+  // Rule to binary convert
   var parseRule = function parseRule(rule) {
-    // To binary string
+    // Base 2 digits
     var code = rule.toString(2);
 
-    // Minimum of 10 digits here
+    // Zero pad ruleset
     var view = ('0000000000000000000000000000000' + code).substr(32 - code.length).split('').reverse();
 
     return view;
   };
 
-  var otto = {
-    // Sensible defaults
+  // Defaults
+  var data = {
     size: 1,
+    rule: 30,
 
-    // Sierpinski
-    rule: 90,
-
-    // Yer typical l, c, r
+    // How far from center lie the neighbors
     ends: [-1, 0, 1],
 
-    // Flip cell middle
+    // Flip middle cell
     seed: function seed(v, i, view) {
       return i === Math.floor(view.length * 0.5);
     },
 
-    // Ruleset index based lookup
+    // Index based lookup
     stat: function stat(code, hood) {
       var stats = parseInt(hood.join('').toString(2), 2);
       var state = code[stats];
@@ -44,23 +43,29 @@ var Otto = (function () {
     }
   };
 
+  // Setup
   var Otto = function Otto(opts) {
-    var _Object$assign = Object.assign({}, otto, opts),
+    // Merge options and defaults
+    var _Object$assign = Object.assign({}, data, opts),
         size = _Object$assign.size,
         rule = _Object$assign.rule,
         ends = _Object$assign.ends,
         stat = _Object$assign.stat,
         seed = _Object$assign.seed;
 
-    // Ruleset
+    // Store ruleset
 
 
     var code = parseRule(rule);
 
     // Calculate state
     var getState = function getState(v, i, view) {
+      // Collect neighbors
       var hood = ends.map(function (diff) {
+        // The index for each neighbor cell
         var site = myMod(diff + i, view.length);
+
+        // The state of each neighbor
         var flag = view[site];
 
         return flag;
@@ -69,16 +74,15 @@ var Otto = (function () {
       return stat(code, hood, v);
     };
 
-    // Cells, zero filled, needs some more work to become of adjustable size
+    // Clipboard, zero filled, need to work out adjustable size part
     var next = new Uint8Array(size);
 
-    // Result
+    // Store results
     var grid = void 0;
 
-    // Flip cell in middle on init
+    // Seed how on init
     next = next.map(seed);
 
-    // Use this
     return function () {
       // Update
       grid = next;
@@ -86,7 +90,7 @@ var Otto = (function () {
       // Save for later
       next = grid.map(getState);
 
-      // The previous generation
+      // The memo
       return grid;
     };
   };
