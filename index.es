@@ -40,8 +40,6 @@ const data = {
 const Otto = (opts) => {
   // Merge options and defaults
   const { size, rule, ends, stat, seed } = Object.assign({}, data, opts);
-
-  // Store ruleset
   const code = parseRule(rule);
 
   // Calculate state
@@ -63,15 +61,12 @@ const Otto = (opts) => {
   // Clipboard, zero filled, need to work out adjustable size part
   let next = new Uint8Array(size);
 
-  // Store results
-  let grid;
-
   // Seed how on init
   next = next.map(seed);
 
   return () => {
     // Update
-    grid = next;
+    let grid = next;
 
     // Save for later
     next = grid.map(getState);
