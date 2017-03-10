@@ -1,62 +1,80 @@
 // # Otto
 // Helps deal with CAs
 
-// Wrap index round edges
-// http://stackoverflow.com/questions/1082917/mod-of-negative-number-is-melting-my-brain
-const mod = (a, b) => a - (b * Math.floor(a / b));
-const sum = (a, b) => a + b;
-const glu = (a, b, i) => a | (b << i);
+// Wrap
+const myMod = (a, b) => a - (b * Math.floor(a / b));
 
-const Otto = ({ rule = 90, rows = 1, cols = 1, span = 1 } = {}) => {
-  // Grid size
-  const area = rows * cols;
+// Int to bin in array form
+const parseRule = (rule) => {
+  // To binary string
+  const code = rule.toString(2);
 
-  // The neighborhood, store distance from each neighbor
-  const hood = rows > 1 ? [0, cols, -cols, 1, -1] : ((arr) => {
-    for (let i = 0, max = 1 + (2 * span); i < max; i += 1) {
-      arr.push(span - i);
-    }
+  // Minimum of 10 digits here
+  const view = `0000000000000000000000000000000${code}`.substr(32 - code.length).split('').reverse();
 
-    return arr;
-  })([]);
+  return view;
+};
 
-  // Decide type of sum
-  const getSum = rows > 1 ? sum : glu;
+const otto = {
+  // Sensible defaults
+  size: 1,
+
+  // Sierpinski
+  rule: 90,
+
+  // Yer typical l, c, r
+  ends: [-1, 0, 1],
+
+  // Flip cell middle
+  seed: (v, i, view) => i === Math.floor(view.length * 0.5),
+
+  // Ruleset index based lookup
+  stat: (code, hood) => {
+    const stats = parseInt(hood.join('').toString(2), 2);
+    const state = code[stats];
+
+    return state;
+  },
+};
+
+const Otto = (opts) => {
+  const { size, rule, ends, stat, seed } = Object.assign({}, otto, opts);
+
+  // Ruleset
+  const code = parseRule(rule);
 
   // Calculate state
-  const getState = (v, i, arr) => {
-    const state = hood.map((diff) => {
-      const site = mod(diff + i, arr.length);
-      const flag = arr[site];
+  const getState = (v, i, view) => {
+    const hood = ends.map((diff) => {
+      const site = myMod(diff + i, view.length);
+      const flag = view[site];
 
-      // Just works :)
-      return (diff === 0 && flag === 1 && rows > 1) ? hood.length : flag;
-    }).reduce(getSum);
+      return flag;
+    });
 
-    return rule & (1 << state) ? 1 : 0;
+    return stat(code, hood, v);
   };
 
-  // Cells, zero filled
-  let memo = new Int8Array(area);
+  // Cells, zero filled, needs some more work to become of adjustable size
+  let next = new Uint8Array(size);
 
   // Result
   let grid;
 
-  return ((seed) => {
-    // Flip cell in middle on init
-    memo[seed] = 1;
+  // Flip cell in middle on init
+  next = next.map(seed);
 
-    return () => {
-      // Update
-      grid = memo;
+  // Use this
+  return () => {
+    // Update
+    grid = next;
 
-      // Save for later
-      memo = grid.map(getState);
+    // Save for later
+    next = grid.map(getState);
 
-      // The previous generation
-      return grid;
-    };
-  })(Math.floor(area * 0.5));
+    // The previous generation
+    return grid;
+  };
 };
 
 export default Otto;
