@@ -201,7 +201,8 @@
           </div>
 
           
-          <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">const</span> { size, rule, ends, stat, seed } = <span class="hljs-built_in">Object</span>.assign({}, data, opts);</pre></div></div>
+          <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">const</span> { size, rule, ends, stat, seed } = <span class="hljs-built_in">Object</span>.assign({}, data, opts);
+  <span class="hljs-keyword">const</span> code = parseRule(rule);</pre></div></div>
           
         </li>
         
@@ -211,22 +212,6 @@
             
             <div class="pilwrap">
               <a class="pilcrow" href="#section-12">&#182;</a>
-            </div>
-            <p>Store ruleset</p>
-
-          </div>
-
-          
-          <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">const</span> code = parseRule(rule);</pre></div></div>
-          
-        </li>
-        
-        
-        <li id="section-13" class="section">
-          <div class="annotation">
-            
-            <div class="pilwrap">
-              <a class="pilcrow" href="#section-13">&#182;</a>
             </div>
             <p>Calculate state</p>
 
@@ -238,11 +223,11 @@
         </li>
         
         
-        <li id="section-14" class="section">
+        <li id="section-13" class="section">
           <div class="annotation">
             
             <div class="pilwrap">
-              <a class="pilcrow" href="#section-14">&#182;</a>
+              <a class="pilcrow" href="#section-13">&#182;</a>
             </div>
             <p>Collect neighbors</p>
 
@@ -254,11 +239,11 @@
         </li>
         
         
-        <li id="section-15" class="section">
+        <li id="section-14" class="section">
           <div class="annotation">
             
             <div class="pilwrap">
-              <a class="pilcrow" href="#section-15">&#182;</a>
+              <a class="pilcrow" href="#section-14">&#182;</a>
             </div>
             <p>The index for each neighbor cell</p>
 
@@ -270,11 +255,11 @@
         </li>
         
         
-        <li id="section-16" class="section">
+        <li id="section-15" class="section">
           <div class="annotation">
             
             <div class="pilwrap">
-              <a class="pilcrow" href="#section-16">&#182;</a>
+              <a class="pilcrow" href="#section-15">&#182;</a>
             </div>
             <p>The state of each neighbor</p>
 
@@ -292,11 +277,11 @@
         </li>
         
         
-        <li id="section-17" class="section">
+        <li id="section-16" class="section">
           <div class="annotation">
             
             <div class="pilwrap">
-              <a class="pilcrow" href="#section-17">&#182;</a>
+              <a class="pilcrow" href="#section-16">&#182;</a>
             </div>
             <p>Clipboard, zero filled, need to work out adjustable size part</p>
 
@@ -308,27 +293,11 @@
         </li>
         
         
-        <li id="section-18" class="section">
+        <li id="section-17" class="section">
           <div class="annotation">
             
             <div class="pilwrap">
-              <a class="pilcrow" href="#section-18">&#182;</a>
-            </div>
-            <p>Store results</p>
-
-          </div>
-
-          
-          <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">let</span> grid;</pre></div></div>
-          
-        </li>
-        
-        
-        <li id="section-19" class="section">
-          <div class="annotation">
-            
-            <div class="pilwrap">
-              <a class="pilcrow" href="#section-19">&#182;</a>
+              <a class="pilcrow" href="#section-17">&#182;</a>
             </div>
             <p>Seed how on init</p>
 
@@ -342,27 +311,27 @@
         </li>
         
         
-        <li id="section-20" class="section">
+        <li id="section-18" class="section">
           <div class="annotation">
             
             <div class="pilwrap">
-              <a class="pilcrow" href="#section-20">&#182;</a>
+              <a class="pilcrow" href="#section-18">&#182;</a>
             </div>
             <p>Update</p>
 
           </div>
 
           
-          <div class="content"><div class='highlight'><pre>    grid = next;</pre></div></div>
+          <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">let</span> grid = next;</pre></div></div>
           
         </li>
         
         
-        <li id="section-21" class="section">
+        <li id="section-19" class="section">
           <div class="annotation">
             
             <div class="pilwrap">
-              <a class="pilcrow" href="#section-21">&#182;</a>
+              <a class="pilcrow" href="#section-19">&#182;</a>
             </div>
             <p>Save for later</p>
 
@@ -374,11 +343,11 @@
         </li>
         
         
-        <li id="section-22" class="section">
+        <li id="section-20" class="section">
           <div class="annotation">
             
             <div class="pilwrap">
-              <a class="pilcrow" href="#section-22">&#182;</a>
+              <a class="pilcrow" href="#section-20">&#182;</a>
             </div>
             <p>The memo</p>
 
