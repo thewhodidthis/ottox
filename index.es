@@ -4,16 +4,17 @@
 // Wrap index round edges
 // http://stackoverflow.com/questions/1082917/mod-of-negative-number-is-melting-my-brain
 const myMod = (a, b) => a - (b * Math.floor(a / b));
+const zeros = (1024).toString(2).split('').slice(1).join('');
+const zerosMax = zeros.length;
 
 // Rule to binary convert
 const parseRule = (rule) => {
   // Base 2 digits
   const code = rule.toString(2);
+  const diff = Math.max(zerosMax, zerosMax - code.length);
 
   // Zero pad ruleset
-  const view = `0000000000000000000000000000000${code}`.substr(32 - code.length).split('').reverse();
-
-  return view;
+  return `${zeros}${code}`.substr(diff).split('').reverse();
 };
 
 // Defaults
@@ -28,11 +29,11 @@ const data = {
   seed: (v, i, view) => i === Math.floor(view.length * 0.5),
 
   // Index based lookup
-  stat: (code, hood) => {
-    const stats = parseInt(hood.join('').toString(2), 2);
-    const state = code[stats];
+  stat: (hood, code) => {
+    const flags = hood.join('').toString(2);
+    const stats = parseInt(flags, 2);
 
-    return state;
+    return code[stats];
   },
 };
 
@@ -43,35 +44,27 @@ const Otto = (opts) => {
   const code = parseRule(rule);
 
   // Calculate state
-  const getState = (v, i, view) => {
-    // Collect neighbors
-    const hood = ends.map((diff) => {
+  const step = (v, i, view) => {
+    const hood = ends.map((span) => {
       // The index for each neighbor cell
-      const site = myMod(diff + i, view.length);
+      const site = myMod(span + i, view.length);
 
-      // The state of each neighbor
-      const flag = view[site];
-
-      return flag;
+        // The state of each neighbor
+      return view[site];
     });
 
-    return stat(code, hood, v);
+    return stat(hood, code);
   };
 
   // Clipboard, zero filled, need to work out adjustable size part
-  let next = new Uint8Array(size);
-
-  // Seed how on init
-  next = next.map(seed);
+  let grid = new Uint8Array(size);
+  let next = seed;
 
   return () => {
     // Update
-    let grid = next;
+    grid = grid.map(next);
+    next = step;
 
-    // Save for later
-    next = grid.map(getState);
-
-    // The memo
     return grid;
   };
 };
