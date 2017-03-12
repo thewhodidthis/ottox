@@ -66,7 +66,7 @@ var Otto = (function () {
         return view[site];
       });
 
-      return stat(hood, code);
+      return stat(hood, code, v);
     };
 
     // Clipboard, zero filled, need to work out adjustable size part
