@@ -46,7 +46,9 @@
           </div>
 
           
-          <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> myMod = <span class="hljs-function">(<span class="hljs-params">a, b</span>) =&gt;</span> a - (b * <span class="hljs-built_in">Math</span>.floor(a / b));</pre></div></div>
+          <div class="content"><div class='highlight'><pre><span class="hljs-keyword">const</span> myMod = <span class="hljs-function">(<span class="hljs-params">a, b</span>) =&gt;</span> a - (b * <span class="hljs-built_in">Math</span>.floor(a / b));
+<span class="hljs-keyword">const</span> zeros = (<span class="hljs-number">1024</span>).toString(<span class="hljs-number">2</span>).split(<span class="hljs-string">''</span>).slice(<span class="hljs-number">1</span>).join(<span class="hljs-string">''</span>);
+<span class="hljs-keyword">const</span> zerosMax = zeros.length;</pre></div></div>
           
         </li>
         
@@ -78,7 +80,8 @@
           </div>
 
           
-          <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">const</span> code = rule.toString(<span class="hljs-number">2</span>);</pre></div></div>
+          <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">const</span> code = rule.toString(<span class="hljs-number">2</span>);
+  <span class="hljs-keyword">const</span> diff = <span class="hljs-built_in">Math</span>.max(zerosMax, zerosMax - code.length);</pre></div></div>
           
         </li>
         
@@ -94,9 +97,7 @@
           </div>
 
           
-          <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">const</span> view = <span class="hljs-string">`0000000000000000000000000000000<span class="hljs-subst">${code}</span>`</span>.substr(<span class="hljs-number">32</span> - code.length).split(<span class="hljs-string">''</span>).reverse();
-
-  <span class="hljs-keyword">return</span> view;
+          <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">return</span> <span class="hljs-string">`<span class="hljs-subst">${zeros}</span><span class="hljs-subst">${code}</span>`</span>.substr(diff).split(<span class="hljs-string">''</span>).reverse();
 };</pre></div></div>
           
         </li>
@@ -163,11 +164,11 @@
           </div>
 
           
-          <div class="content"><div class='highlight'><pre>  stat: <span class="hljs-function">(<span class="hljs-params">code, hood</span>) =&gt;</span> {
-    <span class="hljs-keyword">const</span> stats = <span class="hljs-built_in">parseInt</span>(hood.join(<span class="hljs-string">''</span>).toString(<span class="hljs-number">2</span>), <span class="hljs-number">2</span>);
-    <span class="hljs-keyword">const</span> state = code[stats];
+          <div class="content"><div class='highlight'><pre>  stat: <span class="hljs-function">(<span class="hljs-params">hood, code</span>) =&gt;</span> {
+    <span class="hljs-keyword">const</span> flags = hood.join(<span class="hljs-string">''</span>).toString(<span class="hljs-number">2</span>);
+    <span class="hljs-keyword">const</span> stats = <span class="hljs-built_in">parseInt</span>(flags, <span class="hljs-number">2</span>);
 
-    <span class="hljs-keyword">return</span> state;
+    <span class="hljs-keyword">return</span> code[stats];
   },
 };</pre></div></div>
           
@@ -218,7 +219,8 @@
           </div>
 
           
-          <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">const</span> getState = <span class="hljs-function">(<span class="hljs-params">v, i, view</span>) =&gt;</span> {</pre></div></div>
+          <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">const</span> step = <span class="hljs-function">(<span class="hljs-params">v, i, view</span>) =&gt;</span> {
+    <span class="hljs-keyword">const</span> hood = ends.map(<span class="hljs-function">(<span class="hljs-params">span</span>) =&gt;</span> {</pre></div></div>
           
         </li>
         
@@ -229,12 +231,12 @@
             <div class="pilwrap">
               <a class="pilcrow" href="#section-13">&#182;</a>
             </div>
-            <p>Collect neighbors</p>
+            <p>The index for each neighbor cell</p>
 
           </div>
 
           
-          <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">const</span> hood = ends.map(<span class="hljs-function">(<span class="hljs-params">diff</span>) =&gt;</span> {</pre></div></div>
+          <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">const</span> site = myMod(span + i, view.length);</pre></div></div>
           
         </li>
         
@@ -245,12 +247,16 @@
             <div class="pilwrap">
               <a class="pilcrow" href="#section-14">&#182;</a>
             </div>
-            <p>The index for each neighbor cell</p>
+            <p>The state of each neighbor</p>
 
           </div>
 
           
-          <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">const</span> site = myMod(diff + i, view.length);</pre></div></div>
+          <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">return</span> view[site];
+    });
+
+    <span class="hljs-keyword">return</span> stat(hood, code, v);
+  };</pre></div></div>
           
         </li>
         
@@ -261,18 +267,15 @@
             <div class="pilwrap">
               <a class="pilcrow" href="#section-15">&#182;</a>
             </div>
-            <p>The state of each neighbor</p>
+            <p>Clipboard, zero filled, need to work out adjustable size part</p>
 
           </div>
 
           
-          <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">const</span> flag = view[site];
+          <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">let</span> grid = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Uint8Array</span>(size);
+  <span class="hljs-keyword">let</span> next = seed;
 
-      <span class="hljs-keyword">return</span> flag;
-    });
-
-    <span class="hljs-keyword">return</span> stat(code, hood, v);
-  };</pre></div></div>
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {</pre></div></div>
           
         </li>
         
@@ -283,78 +286,15 @@
             <div class="pilwrap">
               <a class="pilcrow" href="#section-16">&#182;</a>
             </div>
-            <p>Clipboard, zero filled, need to work out adjustable size part</p>
-
-          </div>
-
-          
-          <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">let</span> next = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Uint8Array</span>(size);</pre></div></div>
-          
-        </li>
-        
-        
-        <li id="section-17" class="section">
-          <div class="annotation">
-            
-            <div class="pilwrap">
-              <a class="pilcrow" href="#section-17">&#182;</a>
-            </div>
-            <p>Seed how on init</p>
-
-          </div>
-
-          
-          <div class="content"><div class='highlight'><pre>  next = next.map(seed);
-
-  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {</pre></div></div>
-          
-        </li>
-        
-        
-        <li id="section-18" class="section">
-          <div class="annotation">
-            
-            <div class="pilwrap">
-              <a class="pilcrow" href="#section-18">&#182;</a>
-            </div>
             <p>Update</p>
 
           </div>
 
           
-          <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">let</span> grid = next;</pre></div></div>
-          
-        </li>
-        
-        
-        <li id="section-19" class="section">
-          <div class="annotation">
-            
-            <div class="pilwrap">
-              <a class="pilcrow" href="#section-19">&#182;</a>
-            </div>
-            <p>Save for later</p>
+          <div class="content"><div class='highlight'><pre>    grid = grid.map(next);
+    next = step;
 
-          </div>
-
-          
-          <div class="content"><div class='highlight'><pre>    next = grid.map(getState);</pre></div></div>
-          
-        </li>
-        
-        
-        <li id="section-20" class="section">
-          <div class="annotation">
-            
-            <div class="pilwrap">
-              <a class="pilcrow" href="#section-20">&#182;</a>
-            </div>
-            <p>The memo</p>
-
-          </div>
-
-          
-          <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">return</span> grid;
+    <span class="hljs-keyword">return</span> grid;
   };
 };
 
