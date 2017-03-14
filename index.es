@@ -11,6 +11,8 @@ const zerosMax = zeros.length;
 const parseRule = (rule) => {
   // Base 2 digits
   const code = rule.toString(2);
+
+  // No padding past 10
   const diff = Math.max(zerosMax, zerosMax - code.length);
 
   // Zero pad ruleset
@@ -41,15 +43,18 @@ const data = {
 const Otto = (opts) => {
   // Merge options and defaults
   const { size, rule, ends, stat, seed } = Object.assign({}, data, opts);
+
+  // Rule 90 would be ['0', '1', '0', '1', '1', '0', '1']
   const code = parseRule(rule);
 
   // Calculate state
   const step = (v, i, view) => {
+    // Collect neighboring flags
     const hood = ends.map((span) => {
-      // The index for each neighbor cell
+      // The index for each neighbor
       const site = myMod(span + i, view.length);
 
-        // The state of each neighbor
+      // The state of each neighbor
       return view[site];
     });
 
@@ -60,8 +65,8 @@ const Otto = (opts) => {
   let grid = new Uint8Array(size);
   let next = seed;
 
+  // Tick
   return () => {
-    // Update
     grid = grid.map(next);
     next = step;
 
