@@ -1,6 +1,6 @@
 {
   "name": "@thewhodidthis/otto",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Helps deal with elementary cellular automata",
   "keywords": [
     "automata",
