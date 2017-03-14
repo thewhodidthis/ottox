@@ -80,8 +80,7 @@
           </div>
 
           
-          <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">const</span> code = rule.toString(<span class="hljs-number">2</span>);
-  <span class="hljs-keyword">const</span> diff = <span class="hljs-built_in">Math</span>.max(zerosMax, zerosMax - code.length);</pre></div></div>
+          <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">const</span> code = rule.toString(<span class="hljs-number">2</span>);</pre></div></div>
           
         </li>
         
@@ -92,7 +91,23 @@
             <div class="pilwrap">
               <a class="pilcrow" href="#section-5">&#182;</a>
             </div>
-            <p>Zero pad ruleset</p>
+            <p>No padding past 10</p>
+
+          </div>
+
+          
+          <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">const</span> diff = <span class="hljs-built_in">Math</span>.max(zerosMax, zerosMax - code.length);</pre></div></div>
+          
+        </li>
+        
+        
+        <li id="section-6" class="section">
+          <div class="annotation">
+            
+            <div class="pilwrap">
+              <a class="pilcrow" href="#section-6">&#182;</a>
+            </div>
+            <p>Zero pad ruleset if need be</p>
 
           </div>
 
@@ -103,11 +118,11 @@
         </li>
         
         
-        <li id="section-6" class="section">
+        <li id="section-7" class="section">
           <div class="annotation">
             
             <div class="pilwrap">
-              <a class="pilcrow" href="#section-6">&#182;</a>
+              <a class="pilcrow" href="#section-7">&#182;</a>
             </div>
             <p>Defaults</p>
 
@@ -121,11 +136,11 @@
         </li>
         
         
-        <li id="section-7" class="section">
+        <li id="section-8" class="section">
           <div class="annotation">
             
             <div class="pilwrap">
-              <a class="pilcrow" href="#section-7">&#182;</a>
+              <a class="pilcrow" href="#section-8">&#182;</a>
             </div>
             <p>How far from center lie the neighbors</p>
 
@@ -137,11 +152,11 @@
         </li>
         
         
-        <li id="section-8" class="section">
+        <li id="section-9" class="section">
           <div class="annotation">
             
             <div class="pilwrap">
-              <a class="pilcrow" href="#section-8">&#182;</a>
+              <a class="pilcrow" href="#section-9">&#182;</a>
             </div>
             <p>Flip middle cell</p>
 
@@ -153,11 +168,11 @@
         </li>
         
         
-        <li id="section-9" class="section">
+        <li id="section-10" class="section">
           <div class="annotation">
             
             <div class="pilwrap">
-              <a class="pilcrow" href="#section-9">&#182;</a>
+              <a class="pilcrow" href="#section-10">&#182;</a>
             </div>
             <p>Index based lookup</p>
 
@@ -175,11 +190,11 @@
         </li>
         
         
-        <li id="section-10" class="section">
+        <li id="section-11" class="section">
           <div class="annotation">
             
             <div class="pilwrap">
-              <a class="pilcrow" href="#section-10">&#182;</a>
+              <a class="pilcrow" href="#section-11">&#182;</a>
             </div>
             <p>Setup</p>
 
@@ -191,36 +206,18 @@
         </li>
         
         
-        <li id="section-11" class="section">
-          <div class="annotation">
-            
-            <div class="pilwrap">
-              <a class="pilcrow" href="#section-11">&#182;</a>
-            </div>
-            <p>Merge options and defaults</p>
-
-          </div>
-
-          
-          <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">const</span> { size, rule, ends, stat, seed } = <span class="hljs-built_in">Object</span>.assign({}, data, opts);
-  <span class="hljs-keyword">const</span> code = parseRule(rule);</pre></div></div>
-          
-        </li>
-        
-        
         <li id="section-12" class="section">
           <div class="annotation">
             
             <div class="pilwrap">
               <a class="pilcrow" href="#section-12">&#182;</a>
             </div>
-            <p>Calculate state</p>
+            <p>Merge options and defaults</p>
 
           </div>
 
           
-          <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">const</span> step = <span class="hljs-function">(<span class="hljs-params">v, i, view</span>) =&gt;</span> {
-    <span class="hljs-keyword">const</span> hood = ends.map(<span class="hljs-function">(<span class="hljs-params">span</span>) =&gt;</span> {</pre></div></div>
+          <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">const</span> { size, rule, ends, stat, seed } = <span class="hljs-built_in">Object</span>.assign({}, data, opts);</pre></div></div>
           
         </li>
         
@@ -231,12 +228,12 @@
             <div class="pilwrap">
               <a class="pilcrow" href="#section-13">&#182;</a>
             </div>
-            <p>The index for each neighbor cell</p>
+            <p>Rule 90 would be [‘0’, ‘1’, ‘0’, ‘1’, ‘1’, ‘0’, ‘1’]</p>
 
           </div>
 
           
-          <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">const</span> site = myMod(span + i, view.length);</pre></div></div>
+          <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">const</span> code = parseRule(rule);</pre></div></div>
           
         </li>
         
@@ -246,6 +243,54 @@
             
             <div class="pilwrap">
               <a class="pilcrow" href="#section-14">&#182;</a>
+            </div>
+            <p>Calculate state</p>
+
+          </div>
+
+          
+          <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">const</span> step = <span class="hljs-function">(<span class="hljs-params">v, i, view</span>) =&gt;</span> {</pre></div></div>
+          
+        </li>
+        
+        
+        <li id="section-15" class="section">
+          <div class="annotation">
+            
+            <div class="pilwrap">
+              <a class="pilcrow" href="#section-15">&#182;</a>
+            </div>
+            <p>Collect neighboring flags</p>
+
+          </div>
+
+          
+          <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">const</span> hood = ends.map(<span class="hljs-function">(<span class="hljs-params">span</span>) =&gt;</span> {</pre></div></div>
+          
+        </li>
+        
+        
+        <li id="section-16" class="section">
+          <div class="annotation">
+            
+            <div class="pilwrap">
+              <a class="pilcrow" href="#section-16">&#182;</a>
+            </div>
+            <p>The index for each neighbor</p>
+
+          </div>
+
+          
+          <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">const</span> site = myMod(span + i, view.length);</pre></div></div>
+          
+        </li>
+        
+        
+        <li id="section-17" class="section">
+          <div class="annotation">
+            
+            <div class="pilwrap">
+              <a class="pilcrow" href="#section-17">&#182;</a>
             </div>
             <p>The state of each neighbor</p>
 
@@ -261,11 +306,11 @@
         </li>
         
         
-        <li id="section-15" class="section">
+        <li id="section-18" class="section">
           <div class="annotation">
             
             <div class="pilwrap">
-              <a class="pilcrow" href="#section-15">&#182;</a>
+              <a class="pilcrow" href="#section-18">&#182;</a>
             </div>
             <p>Clipboard, zero filled, need to work out adjustable size part</p>
 
@@ -273,25 +318,24 @@
 
           
           <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">let</span> grid = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Uint8Array</span>(size);
-  <span class="hljs-keyword">let</span> next = seed;
-
-  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {</pre></div></div>
+  <span class="hljs-keyword">let</span> next = seed;</pre></div></div>
           
         </li>
         
         
-        <li id="section-16" class="section">
+        <li id="section-19" class="section">
           <div class="annotation">
             
             <div class="pilwrap">
-              <a class="pilcrow" href="#section-16">&#182;</a>
+              <a class="pilcrow" href="#section-19">&#182;</a>
             </div>
-            <p>Update</p>
+            <p>Tick</p>
 
           </div>
 
           
-          <div class="content"><div class='highlight'><pre>    grid = grid.map(next);
+          <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+    grid = grid.map(next);
     next = step;
 
     <span class="hljs-keyword">return</span> grid;
