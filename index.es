@@ -10,7 +10,7 @@ const zerosMax = zeros.length;
 // Rule to binary convert
 const parseRule = (rule) => {
   // Base 2 digits
-  const code = rule.toString(2);
+  const code = Number(rule).toString(2);
 
   // No padding past 10
   const diff = Math.max(zerosMax, zerosMax - code.length);
