@@ -15,7 +15,7 @@ const parseRule = (rule) => {
   // No padding past 10
   const diff = Math.max(zerosMax, zerosMax - code.length);
 
-  // Zero pad ruleset
+  // Zero pad ruleset if need be
   return `${zeros}${code}`.substr(diff).split('').reverse();
 };
 
