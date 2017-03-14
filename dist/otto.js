@@ -15,7 +15,7 @@ var Otto = (function () {
   // Rule to binary convert
   var parseRule = function parseRule(rule) {
     // Base 2 digits
-    var code = rule.toString(2);
+    var code = Number(rule).toString(2);
 
     // No padding past 10
     var diff = Math.max(zerosMax, zerosMax - code.length);
