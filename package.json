@@ -1,11 +1,11 @@
 {
   "name": "@thewhodidthis/otto",
   "version": "0.0.4",
-  "description": "Helps deal with elementary CAs",
+  "description": "Helps deal with elementary cellular automata",
   "keywords": [
     "automata",
-    "canvas",
-    "cellular"
+    "cellular",
+    "wolfram"
   ],
   "main": "index.js",
   "module": "index.es",
@@ -24,39 +24,38 @@
     "remote": "thewhodidthis@zazie:www/example/otto/"
   },
   "scripts": {
-    "pretest": "rollup -c",
     "test": "node test",
     "clear": "npm run clear:dist && npm run clear:logs",
     "clear:dist": "rm -rf dist/",
     "clear:docs": "rm -rf docs/",
     "clear:logs": "rm -f *.log",
     "lint": "eslint index.es; exit 0",
-    "start": "npm run clear && npm run build",
+    "lint:test": "eslint test/index.js; exit 0",
+    "start": "npm run build && npm run build:min",
     "docs": "docco -l ivory -e .js index.es",
     "postdocs": "open docs/index.html",
     "preexample": "npm start",
-    "example": "npm run example:link && npm run example:serve",
-    "example:link": "ln -siv \"$(pwd)/dist/otto.min.js\" example/otto.js",
+    "example": "npm run example:build && npm run example:serve",
     "example:push": "rsync -avruzLPC --exclude=.DS_Store ./example/ $npm_package_config_remote",
+    "example:build": "ln -siv \"$(pwd)/dist/otto.min.js\" example/otto.js",
     "example:serve": "php -S localhost:8000 -t example/",
-    "prebuild": "mkdir -p dist/",
     "build": "rollup -c",
     "build:min": "uglifyjs dist/otto.js -cm > dist/otto.min.js",
-    "postbuild": "npm run build:min",
     "preversion": "npm start"
   },
   "engines": {
-    "node": ">=4.2.4",
-    "npm": ">=3.5.3"
+    "node": ">=6.10.0",
+    "npm": ">=3.10.10"
   },
   "dependencies": {},
   "devDependencies": {
     "babel-eslint": "latest",
+    "babel-plugin-external-helpers": "latest",
     "babel-preset-es2015": "latest",
     "docco": "github:67656e65726963/docco",
     "eslint": "latest",
-    "eslint-plugin-import": "latest",
     "eslint-config-airbnb-base": "latest",
+    "eslint-plugin-import": "latest",
     "rollup": "latest",
     "rollup-plugin-babel": "latest",
     "tape": "latest",
