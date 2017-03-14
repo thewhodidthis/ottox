@@ -15,9 +15,11 @@ var zerosMax = zeros.length;
 var parseRule = function parseRule(rule) {
   // Base 2 digits
   var code = rule.toString(2);
+
+  // No padding past 10
   var diff = Math.max(zerosMax, zerosMax - code.length);
 
-  // Zero pad ruleset
+  // Zero pad ruleset if need be
   return ('' + zeros + code).substr(diff).split('').reverse();
 };
 
@@ -53,12 +55,16 @@ var Otto = function Otto(opts) {
       stat = _Object$assign.stat,
       seed = _Object$assign.seed;
 
+  // Rule 90 would be ['0', '1', '0', '1', '1', '0', '1']
+
+
   var code = parseRule(rule);
 
   // Calculate state
   var step = function step(v, i, view) {
+    // Collect neighboring flags
     var hood = ends.map(function (span) {
-      // The index for each neighbor cell
+      // The index for each neighbor
       var site = myMod(span + i, view.length);
 
       // The state of each neighbor
@@ -72,8 +78,8 @@ var Otto = function Otto(opts) {
   var grid = new Uint8Array(size);
   var next = seed;
 
+  // Tick
   return function () {
-    // Update
     grid = grid.map(next);
     next = step;
 
