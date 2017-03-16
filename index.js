@@ -55,7 +55,8 @@ var Otto = function Otto(opts) {
       stat = _Object$assign.stat,
       seed = _Object$assign.seed;
 
-  // Rule 90 would be ['0', '1', '0', '1', '1', '0', '1']
+  // Rule 90 would be
+  // ```['0', '1', '0', '1', '1', '0', '1']```
 
 
   var code = parseRule(rule);
@@ -74,7 +75,7 @@ var Otto = function Otto(opts) {
     return stat(hood, code, v);
   };
 
-  // Clipboard, zero filled, need to work out adjustable size part
+  // Clipboard, zero filled
   var grid = new Uint8Array(size);
   var next = seed;
 

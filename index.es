@@ -44,7 +44,8 @@ const Otto = (opts) => {
   // Merge options and defaults
   const { size, rule, ends, stat, seed } = Object.assign({}, data, opts);
 
-  // Rule 90 would be ['0', '1', '0', '1', '1', '0', '1']
+  // Rule 90 would be
+  // ```['0', '1', '0', '1', '1', '0', '1']```
   const code = parseRule(rule);
 
   // Calculate state
@@ -61,7 +62,7 @@ const Otto = (opts) => {
     return stat(hood, code, v);
   };
 
-  // Clipboard, zero filled, need to work out adjustable size part
+  // Clipboard, zero filled
   let grid = new Uint8Array(size);
   let next = seed;
 
