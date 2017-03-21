@@ -38,8 +38,6 @@ var frame = function frame() {
   }
 };
 
-html.className = 'html';
-
 if (window !== window.top) {
   html.className += ' is-iframe';
 }
