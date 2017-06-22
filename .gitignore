@@ -1,5 +1,2 @@
-.DS_Store
 *.log
-node_modules/
-example/otto.js
-
+node_modules
