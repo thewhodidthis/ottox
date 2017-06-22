@@ -8,8 +8,6 @@ export default {
   targets: [
     {
       format: 'iife',
-      indent: true,
-      sourceMap: true,
       moduleName: 'Otto',
       dest: 'dist/otto.js'
     },
