@@ -1,60 +1,65 @@
-'use strict';
+import Otto from '../index.es';
 
-var html = document.documentElement;
+const items = document.getElementsByTagName('li');
+const plots = document.getElementsByTagName('canvas');
 
-var items = document.getElementsByTagName('li');
-var plots = document.getElementsByTagName('canvas');
+const size = 180;
+const ends = [-2, -1, 0, 1, 2];
 
-var rules = [30, 99, 210, 110, 118, 182];
-var ottos = [];
+const ottos = [];
+const rules = [30, 99, 210, 2123739367, 988197457, 2713874006];
 
-var framesN = 179;
-var frameId;
+let frameId = -1;
 
-var frame = function frame() {
-  for (var i = 0; i < rules.length; i += 1) {
-    var plot = plots[i].getContext('2d');
-    var otto = ottos[i];
-    var grid = otto();
+const tick = fn => window.requestAnimationFrame(fn);
+const stop = id => window.cancelAnimationFrame(id);
 
-    for (var j = 0; j < grid.length; j += 1) {
-      var x = j % framesN;
-      var y = frameId - 1;
+const draw = () => {
+  for (let i = 0; i < rules.length; i += 1) {
+    const plot = plots[i].getContext('2d');
+    const otto = ottos[i];
+    const fill = ['black', 'white'];
+
+    if (rules[i] < 256) {
+      fill.reverse();
+    }
+
+    const grid = otto();
+
+    for (let j = 0; j < grid.length; j += 1) {
+      const x = j % size;
+      const y = frameId - 1;
 
       if (grid[j]) {
-        plot.fillStyle = 'white';
+        plot.fillStyle = fill[0];
       } else {
-        plot.fillStyle = 'black';
+        plot.fillStyle = fill[1];
       }
 
       plot.fillRect(x, y, 1, 1);
     }
   }
 
-  if (frameId > framesN) {
-    frameId = window.cancelAnimationFrame(frameId);
-  } else {
-    frameId = window.requestAnimationFrame(frame);
-  }
+  frameId = frameId > size ? stop(frameId) : tick(draw);
 };
 
-if (window !== window.top) {
-  html.className += ' is-iframe';
-}
-
 rules.forEach((rule, i) => {
-  var papa = {
-    rule: rule,
-    size: framesN,
-  };
+  const item = items[i];
 
-  var otto = Otto(papa);
+  item.setAttribute('data-rule', rule);
 
-  items[i].setAttribute('data-rule', rule);
+  const data = { rule, size };
+  const papa = rule < 256 ? data : Object.assign({ ends }, data);
+  const otto = Otto(papa);
+
   ottos.push(otto);
 });
 
-window.addEventListener('load', function (e) {
-  frameId = window.requestAnimationFrame(frame);
-}, false);
+if (window !== window.top) {
+  document.documentElement.classList.add('is-iframe');
+}
+
+window.addEventListener('load', () => {
+  frameId = tick(draw);
+});
 
