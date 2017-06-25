@@ -59,14 +59,14 @@ li::after {
   transform: translate(-50%, -50%) rotateZ(0);
 }
 
-canvas {
-  z-index: 1;
-  display: block;
-  position: relative;
-}
-
+canvas,
 img {
   display: block;
+}
+
+canvas {
+  z-index: 1;
+  position: relative;
 }
 
 .is-iframe {
