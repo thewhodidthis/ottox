@@ -9,13 +9,14 @@
 var myMod = function myMod(a, b) {
   return a - b * Math.floor(a / b);
 };
-var zeros = 1024 .toString(2).split('').slice(1).join('');
-var zerosMax = zeros.length;
 
 // Rule to binary convert
 var parseRule = function parseRule(rule) {
   // Base 2 digits
   var code = Number(rule).toString(2);
+
+  var zeros = 1024 .toString(2).split('').slice(1).join('');
+  var zerosMax = zeros.length;
 
   // No padding past 10
   var diff = Math.max(zerosMax, zerosMax - code.length);
@@ -24,48 +25,38 @@ var parseRule = function parseRule(rule) {
   return ('' + zeros + code).substr(diff).split('').reverse();
 };
 
-// Defaults
-var data = {
-  size: 1,
-  rule: 30,
-
-  // How far from center lie the neighbors
-  ends: [-1, 0, 1],
-
-  // Flip middle cell
-  seed: function seed(v, i, view) {
-    return i === Math.floor(view.length * 0.5);
-  },
-
-  // Index based lookup
-  stat: function stat(hood, code) {
-    var flags = hood.join('').toString(2);
-    var stats = parseInt(flags, 2);
-
-    return code[stats];
-  }
-};
-
-// Setup
-var Otto = function Otto(opts) {
+// Maker
+var Otto = function Otto(options) {
   // Merge options and defaults
-  var _Object$assign = Object.assign({}, data, opts),
-      size = _Object$assign.size,
-      rule = _Object$assign.rule,
-      ends = _Object$assign.ends,
-      stat = _Object$assign.stat,
-      seed = _Object$assign.seed;
+  var settings = Object.assign({
+    size: 1,
+    rule: 30,
+
+    // How far from center lie the neighbors
+    ends: [-1, 0, 1],
+
+    // Flip middle cell
+    seed: function seed(v, i, view) {
+      return i === Math.floor(view.length * 0.5);
+    },
+
+    // Index based lookup
+    stat: function stat(hood, code) {
+      var flags = hood.join('').toString(2);
+      var stats = parseInt(flags, 2);
+
+      return code[stats];
+    }
+  }, options);
 
   // Rule 90 would be
   // ```['0', '1', '0', '1', '1', '0', '1']```
-
-
-  var code = parseRule(rule);
+  var code = parseRule(settings.rule);
 
   // Calculate state
   var step = function step(v, i, view) {
     // Collect neighboring flags
-    var hood = ends.map(function (span) {
+    var hood = settings.ends.map(function (span) {
       // The index for each neighbor
       var site = myMod(span + i, view.length);
 
@@ -73,12 +64,12 @@ var Otto = function Otto(opts) {
       return view[site];
     });
 
-    return stat(hood, code, v);
+    return settings.stat(hood, code, v);
   };
 
   // Clipboard, zero filled
-  var grid = new Uint8Array(size);
-  var next = seed;
+  var grid = new Uint8Array(settings.size);
+  var next = settings.seed;
 
   // Tick
   return function () {
