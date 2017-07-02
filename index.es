@@ -21,9 +21,9 @@ const parseRule = (rule) => {
 };
 
 // Maker
-const Otto = (options) => {
+const Otto = (data) => {
   // Merge options and defaults
-  const settings = Object.assign({
+  const t0to = Object.assign({
     size: 1,
     rule: 30,
 
@@ -40,16 +40,16 @@ const Otto = (options) => {
 
       return code[stats];
     },
-  }, options);
+  }, data);
 
   // Rule 90 would be
   // ```['0', '1', '0', '1', '1', '0', '1']```
-  const code = parseRule(settings.rule);
+  const code = parseRule(t0to.rule);
 
   // Calculate state
   const step = (v, i, view) => {
     // Collect neighboring flags
-    const hood = settings.ends.map((span) => {
+    const hood = t0to.ends.map((span) => {
       // The index for each neighbor
       const site = myMod(span + i, view.length);
 
@@ -57,12 +57,12 @@ const Otto = (options) => {
       return view[site];
     });
 
-    return settings.stat(hood, code, v);
+    return t0to.stat(hood, code, v);
   };
 
   // Clipboard, zero filled
-  let grid = new Uint8Array(settings.size);
-  let next = settings.seed;
+  let grid = new Uint8Array(t0to.size);
+  let next = t0to.seed;
 
   // Tick
   return () => {
