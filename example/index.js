@@ -26,9 +26,9 @@ var parseRule = function parseRule(rule) {
 };
 
 // Maker
-var Otto = function Otto(options) {
+var Otto = function Otto(data) {
   // Merge options and defaults
-  var settings = Object.assign({
+  var t0to = Object.assign({
     size: 1,
     rule: 30,
 
@@ -47,16 +47,16 @@ var Otto = function Otto(options) {
 
       return code[stats];
     }
-  }, options);
+  }, data);
 
   // Rule 90 would be
   // ```['0', '1', '0', '1', '1', '0', '1']```
-  var code = parseRule(settings.rule);
+  var code = parseRule(t0to.rule);
 
   // Calculate state
   var step = function step(v, i, view) {
     // Collect neighboring flags
-    var hood = settings.ends.map(function (span) {
+    var hood = t0to.ends.map(function (span) {
       // The index for each neighbor
       var site = myMod(span + i, view.length);
 
@@ -64,12 +64,12 @@ var Otto = function Otto(options) {
       return view[site];
     });
 
-    return settings.stat(hood, code, v);
+    return t0to.stat(hood, code, v);
   };
 
   // Clipboard, zero filled
-  var grid = new Uint8Array(settings.size);
-  var next = settings.seed;
+  var grid = new Uint8Array(t0to.size);
+  var next = t0to.seed;
 
   // Tick
   return function () {
