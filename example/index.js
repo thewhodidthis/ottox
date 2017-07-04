@@ -6,27 +6,25 @@
 
 // Wrap index round edges
 // http://stackoverflow.com/questions/1082917/mod-of-negative-number-is-melting-my-brain
-var myMod = function myMod(a, b) {
-  return a - b * Math.floor(a / b);
-};
+var myMod = function (a, b) { return a - (b * Math.floor(a / b)); };
 
 // Rule to binary convert
-var parseRule = function parseRule(rule) {
+var parseRule = function (rule) {
   // Base 2 digits
   var code = Number(rule).toString(2);
 
-  var zeros = 1024 .toString(2).split('').slice(1).join('');
+  var zeros = (1024).toString(2).split('').slice(1).join('');
   var zerosMax = zeros.length;
 
   // No padding past 10
   var diff = Math.max(zerosMax, zerosMax - code.length);
 
   // Zero pad ruleset if need be
-  return ('' + zeros + code).substr(diff).split('').reverse();
+  return ("" + zeros + code).substr(diff).split('').reverse();
 };
 
 // Maker
-var Otto = function Otto(data) {
+var Otto = function (data) {
   // Merge options and defaults
   var t0to = Object.assign({
     size: 1,
@@ -36,17 +34,15 @@ var Otto = function Otto(data) {
     ends: [-1, 0, 1],
 
     // Flip middle cell
-    seed: function seed(v, i, view) {
-      return i === Math.floor(view.length * 0.5);
-    },
+    seed: function (v, i, view) { return i === Math.floor(view.length * 0.5); },
 
     // Index based lookup
-    stat: function stat(hood, code) {
+    stat: function (hood, code) {
       var flags = hood.join('').toString(2);
       var stats = parseInt(flags, 2);
 
       return code[stats];
-    }
+    },
   }, data);
 
   // Rule 90 would be
@@ -54,7 +50,7 @@ var Otto = function Otto(data) {
   var code = parseRule(t0to.rule);
 
   // Calculate state
-  var step = function step(v, i, view) {
+  var step = function (v, i, view) {
     // Collect neighboring flags
     var hood = t0to.ends.map(function (span) {
       // The index for each neighbor
@@ -91,14 +87,10 @@ var rules = [30, 99, 210, 2123739367, 988197457, 2713874006];
 
 var frameId = -1;
 
-var tick = function tick(fn) {
-  return window.requestAnimationFrame(fn);
-};
-var stop = function stop(id) {
-  return window.cancelAnimationFrame(id);
-};
+var tick = function (fn) { return window.requestAnimationFrame(fn); };
+var stop = function (id) { return window.cancelAnimationFrame(id); };
 
-var draw = function draw() {
+var draw = function () {
   for (var i = 0; i < rules.length; i += 1) {
     var plot = plots[i].getContext('2d');
     var otto = ottos[i];
@@ -148,3 +140,4 @@ window.addEventListener('load', function () {
 });
 
 }());
+
