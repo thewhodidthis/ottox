@@ -1,5 +1,5 @@
 const test = require('tape');
-const Otto = require('../');
+const Otto = require('./');
 
 // Get object key by value
 // http://stackoverflow.com/questions/9907419/javascript-object-get-key-by-value
