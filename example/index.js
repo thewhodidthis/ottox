@@ -20,7 +20,7 @@ var parseRule = function (rule) {
   var diff = Math.max(zerosMax, zerosMax - code.length);
 
   // Zero pad ruleset if need be
-  return ("" + zeros + code).substr(diff).split('').reverse();
+  return ("" + zeros + code).substr(diff).split('').reverse()
 };
 
 // Maker
@@ -41,8 +41,8 @@ var Otto = function (data) {
       var flags = hood.join('').toString(2);
       var stats = parseInt(flags, 2);
 
-      return code[stats];
-    },
+      return code[stats]
+    }
   }, data);
 
   // Rule 90 would be
@@ -57,10 +57,10 @@ var Otto = function (data) {
       var site = myMod(span + i, view.length);
 
       // The state of each neighbor
-      return view[site];
+      return view[site]
     });
 
-    return t0to.stat(hood, code, v);
+    return t0to.stat(hood, code, v)
   };
 
   // Clipboard, zero filled
@@ -72,8 +72,8 @@ var Otto = function (data) {
     grid = grid.map(next);
     next = step;
 
-    return grid;
-  };
+    return grid
+  }
 };
 
 var items = document.getElementsByTagName('li');
