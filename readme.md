@@ -5,4 +5,3 @@
 ```sh
 npm install thewhodidthis/otto
 ```
-
