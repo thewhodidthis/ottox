@@ -2,11 +2,6 @@
   "name": "@thewhodidthis/otto",
   "version": "0.0.6",
   "description": "Helps deal with elementary cellular automata",
-  "keywords": [
-    "automata",
-    "cellular",
-    "wolfram"
-  ],
   "main": "index.js",
   "module": "index.es",
   "homepage": "https://github.com/thewhodidthis/otto#readme",
@@ -17,20 +12,21 @@
   "bugs": {
     "url": "https://github.com/thewhodidthis/otto/issues"
   },
-  "eslintConfig": {
-    "extends": "airbnb-base",
-    "env": {
-      "browser": true
-    },
-    "rules": {
-      "no-bitwise": 1
-    }
-  },
   "scripts": {
-    "test": "eslint '**/*.es' test.js && node test",
+    "pretest": "eslint test.js",
+    "test": "node test",
+    "prestart": "eslint index.es",
     "start": "rollup -f cjs index.es | buble > index.js",
-    "example": "cd example; rollup -f iife index.es | buble > index.js && open index.html",
+    "preexample": "eslint example/index.es",
+    "example": "cd example; rollup -f iife index.es | buble > index.js",
+    "postexample": "open example/index.html",
     "postpublish": "rsync -avruzLPC --del --exclude=.* ./example/ thewhodidthis@zazie:www/example/otto/"
+  },
+  "eslintConfig": {
+    "extends": "@thewhodidthis",
+    "globals": {
+      "Uint8Array": true
+    }
   },
   "engines": {
     "node": ">=4.2.4",
@@ -38,10 +34,9 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "@thewhodidthis/eslint-config": "latest",
     "buble": "latest",
-    "eslint": "^3.19.0",
-    "eslint-config-airbnb-base": "latest",
-    "eslint-plugin-import": "latest",
+    "eslint": "latest",
     "rollup": "latest",
     "tape": "latest"
   },
