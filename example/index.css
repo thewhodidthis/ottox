@@ -84,8 +84,3 @@ canvas {
   display: none;
 }
 
-.is-iframe canvas {
-  width: 100%;
-  max-width: 100%;
-}
-
