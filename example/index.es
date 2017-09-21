@@ -1,4 +1,4 @@
-import Otto from '../index.es'
+import Otto from '../index.mjs'
 
 const items = document.getElementsByTagName('li')
 const plots = document.getElementsByTagName('canvas')
