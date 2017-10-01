@@ -1,7 +1,7 @@
 'use strict'
 
 const test = require('tape')
-const Otto = require('./')
+const calculator = require('./')
 
 // Get object key by value
 // http://stackoverflow.com/questions/9907419/javascript-object-get-key-by-value
@@ -35,14 +35,14 @@ test('will compute', (t) => {
     const size = series.length
 
     // Create a new CA
-    const toto = Otto({ rule, size })
+    const calc = calculator({ rule, size })
 
     // Collect CA flags
     const data = []
 
     for (let i = 0; i < size; i += 1) {
       // Tick
-      const gen = toto()
+      const gen = calc()
 
       // Only interested in the middle cell
       const mid = gen.length * 0.5
@@ -60,10 +60,10 @@ test('will compute', (t) => {
 
 // Ignores nonsensical arguments
 test('will default', (t) => {
-  const toto = Otto(NaN, null)
-  const grid = toto()
+  const calc = calculator(NaN, null)
+  const grid = calc()
 
-  t.equal(typeof toto, 'function', 'Returns a function')
+  t.equal(typeof calc, 'function', 'Returns a function')
   t.ok(grid instanceof Uint8Array, 'Calling returns a typed array')
 
   t.end()
