@@ -1,36 +1,36 @@
-import Otto from '../index.mjs'
+import calculate from '../index.mjs'
 
 const items = document.getElementsByTagName('li')
 const plots = document.getElementsByTagName('canvas')
 
+const lines = []
+const rules = [30, 99, 210, 2123739367, 988197457, 2713874006]
+
 const size = 180
 const ends = [-2, -1, 0, 1, 2]
 
-const ottos = []
-const rules = [30, 99, 210, 2123739367, 988197457, 2713874006]
-
-let frameId = -1
+let frames = -1
 
 const tick = fn => window.requestAnimationFrame(fn)
 const stop = id => window.cancelAnimationFrame(id)
 
 const draw = () => {
-  for (let i = 0; i < rules.length; i += 1) {
-    const plot = plots[i].getContext('2d')
-    const otto = ottos[i]
+  for (let i = 0, k = rules.length; i < k; i += 1) {
     const fill = ['black', 'white']
+    const plot = plots[i].getContext('2d')
+    const next = lines[i]
 
     if (rules[i] < 256) {
       fill.reverse()
     }
 
-    const grid = otto()
+    const data = next()
 
-    for (let j = 0; j < grid.length; j += 1) {
+    for (let j = 0, n = data.length; j < n; j += 1) {
       const x = j % size
-      const y = frameId - 1
+      const y = frames - 1
 
-      if (grid[j]) {
+      if (data[j]) {
         plot.fillStyle = fill[0]
       } else {
         plot.fillStyle = fill[1]
@@ -40,7 +40,7 @@ const draw = () => {
     }
   }
 
-  frameId = frameId > size ? stop(frameId) : tick(draw)
+  frames = frames > size ? stop(frames) : tick(draw)
 }
 
 rules.forEach((rule, i) => {
@@ -50,9 +50,9 @@ rules.forEach((rule, i) => {
 
   const data = { rule, size }
   const papa = rule < 256 ? data : Object.assign({ ends }, data)
-  const otto = Otto(papa)
+  const line = calculate(papa)
 
-  ottos.push(otto)
+  lines.push(line)
 })
 
 if (window !== window.top) {
@@ -60,5 +60,5 @@ if (window !== window.top) {
 }
 
 window.addEventListener('load', () => {
-  frameId = tick(draw)
+  frames = tick(draw)
 })

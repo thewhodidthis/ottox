@@ -23,8 +23,8 @@ var parseRule = function (rule) {
   return ("" + zeros + code).substr(diff).split('').reverse()
 };
 
-// Maker
-var Otto = function (data) {
+// Grid maker
+var otto = function (data) {
   // Merge options and defaults
   var t0to = Object.assign({
     size: 1,
@@ -79,34 +79,34 @@ var Otto = function (data) {
 var items = document.getElementsByTagName('li');
 var plots = document.getElementsByTagName('canvas');
 
+var lines = [];
+var rules = [30, 99, 210, 2123739367, 988197457, 2713874006];
+
 var size = 180;
 var ends = [-2, -1, 0, 1, 2];
 
-var ottos = [];
-var rules = [30, 99, 210, 2123739367, 988197457, 2713874006];
-
-var frameId = -1;
+var frames = -1;
 
 var tick = function (fn) { return window.requestAnimationFrame(fn); };
 var stop = function (id) { return window.cancelAnimationFrame(id); };
 
 var draw = function () {
-  for (var i = 0; i < rules.length; i += 1) {
-    var plot = plots[i].getContext('2d');
-    var otto = ottos[i];
+  for (var i = 0, k = rules.length; i < k; i += 1) {
     var fill = ['black', 'white'];
+    var plot = plots[i].getContext('2d');
+    var next = lines[i];
 
     if (rules[i] < 256) {
       fill.reverse();
     }
 
-    var grid = otto();
+    var data = next();
 
-    for (var j = 0; j < grid.length; j += 1) {
+    for (var j = 0, n = data.length; j < n; j += 1) {
       var x = j % size;
-      var y = frameId - 1;
+      var y = frames - 1;
 
-      if (grid[j]) {
+      if (data[j]) {
         plot.fillStyle = fill[0];
       } else {
         plot.fillStyle = fill[1];
@@ -116,7 +116,7 @@ var draw = function () {
     }
   }
 
-  frameId = frameId > size ? stop(frameId) : tick(draw);
+  frames = frames > size ? stop(frames) : tick(draw);
 };
 
 rules.forEach(function (rule, i) {
@@ -126,9 +126,9 @@ rules.forEach(function (rule, i) {
 
   var data = { rule: rule, size: size };
   var papa = rule < 256 ? data : Object.assign({ ends: ends }, data);
-  var otto = Otto(papa);
+  var line = otto(papa);
 
-  ottos.push(otto);
+  lines.push(line);
 });
 
 if (window !== window.top) {
@@ -136,7 +136,7 @@ if (window !== window.top) {
 }
 
 window.addEventListener('load', function () {
-  frameId = tick(draw);
+  frames = tick(draw);
 });
 
 }());
