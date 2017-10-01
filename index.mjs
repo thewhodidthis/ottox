@@ -20,8 +20,8 @@ const parseRule = (rule) => {
   return `${zeros}${code}`.substr(diff).split('').reverse()
 }
 
-// Maker
-const Otto = (data) => {
+// Grid maker
+const otto = (data) => {
   // Merge options and defaults
   const t0to = Object.assign({
     size: 1,
@@ -73,4 +73,4 @@ const Otto = (data) => {
   }
 }
 
-export default Otto
+export default otto

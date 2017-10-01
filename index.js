@@ -22,8 +22,8 @@ var parseRule = function (rule) {
   return ("" + zeros + code).substr(diff).split('').reverse()
 };
 
-// Maker
-var Otto = function (data) {
+// Grid maker
+var otto = function (data) {
   // Merge options and defaults
   var t0to = Object.assign({
     size: 1,
@@ -75,5 +75,5 @@ var Otto = function (data) {
   }
 };
 
-module.exports = Otto;
+module.exports = otto;
 
