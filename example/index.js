@@ -2,7 +2,7 @@
 'use strict';
 
 // # Otto
-// Helps deal CAs
+// Helps create elementary Cellular Automata
 
 // Wrap index round edges
 // http://stackoverflow.com/questions/1082917/mod-of-negative-number-is-melting-my-brain
@@ -23,10 +23,10 @@ var parseRule = function (rule) {
   return ("" + zeros + code).substr(diff).split('').reverse()
 };
 
-// Grid maker
+// Master grid maker
 var otto = function (data) {
   // Merge options and defaults
-  var t0to = Object.assign({
+  var papa = Object.assign({
     size: 1,
     rule: 30,
 
@@ -47,12 +47,12 @@ var otto = function (data) {
 
   // Rule 90 would be
   // ```['0', '1', '0', '1', '1', '0', '1']```
-  var code = parseRule(t0to.rule);
+  var code = parseRule(papa.rule);
 
   // Calculate state
   var step = function (v, i, view) {
     // Collect neighboring flags
-    var hood = t0to.ends.map(function (span) {
+    var hood = papa.ends.map(function (span) {
       // The index for each neighbor
       var site = myMod(span + i, view.length);
 
@@ -60,12 +60,12 @@ var otto = function (data) {
       return view[site]
     });
 
-    return t0to.stat(hood, code, v)
+    return papa.stat(hood, code, v)
   };
 
   // Clipboard, zero filled
-  var grid = new Uint8Array(t0to.size);
-  var next = t0to.seed;
+  var grid = new Uint8Array(papa.size);
+  var next = papa.seed;
 
   // Tick
   return function () {
@@ -124,9 +124,9 @@ rules.forEach(function (rule, i) {
 
   item.setAttribute('data-rule', rule);
 
-  var data = { rule: rule, size: size };
-  var papa = rule < 256 ? data : Object.assign({ ends: ends }, data);
-  var line = otto(papa);
+  var papa = { rule: rule, size: size };
+  var data = rule < 256 ? papa : Object.assign({ ends: ends }, papa);
+  var line = otto(data);
 
   lines.push(line);
 });

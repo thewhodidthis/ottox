@@ -1,4 +1,4 @@
-import calculate from '../index.mjs'
+import otto from '../index.mjs'
 
 const items = document.getElementsByTagName('li')
 const plots = document.getElementsByTagName('canvas')
@@ -48,9 +48,9 @@ rules.forEach((rule, i) => {
 
   item.setAttribute('data-rule', rule)
 
-  const data = { rule, size }
-  const papa = rule < 256 ? data : Object.assign({ ends }, data)
-  const line = calculate(papa)
+  const papa = { rule, size }
+  const data = rule < 256 ? papa : Object.assign({ ends }, papa)
+  const line = otto(data)
 
   lines.push(line)
 })
