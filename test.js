@@ -1,7 +1,7 @@
 'use strict'
 
 const test = require('tape')
-const calculator = require('./')
+const otto = require('./')
 
 // Get object key by value
 // http://stackoverflow.com/questions/9907419/javascript-object-get-key-by-value
@@ -17,12 +17,7 @@ const A051023 = [1, 1, 0, 1, 1, 1, 0, 0, 1, 1]
 const seqs = { A000007, A000012, A051023, A079978 }
 
 // Expected matches
-const lookup = {
-  30: A051023,
-  99: A079978,
-  110: A000012,
-  210: A000007
-}
+const lookup = { 30: A051023, 99: A079978, 110: A000012, 210: A000007 }
 
 // Compares with known integer sequence
 test('will compute', (t) => {
@@ -35,14 +30,14 @@ test('will compute', (t) => {
     const size = series.length
 
     // Create a new CA
-    const calc = calculator({ rule, size })
+    const next = otto({ rule, size })
 
     // Collect CA flags
     const data = []
 
     for (let i = 0; i < size; i += 1) {
       // Tick
-      const gen = calc()
+      const gen = next()
 
       // Only interested in the middle cell
       const mid = gen.length * 0.5
@@ -60,10 +55,10 @@ test('will compute', (t) => {
 
 // Ignores nonsensical arguments
 test('will default', (t) => {
-  const calc = calculator(NaN, null)
-  const grid = calc()
+  const next = otto(NaN, null)
+  const grid = next()
 
-  t.equal(typeof calc, 'function', 'Returns a function')
+  t.equal(typeof next, 'function', 'Returns a function')
   t.ok(grid instanceof Uint8Array, 'Calling returns a typed array')
 
   t.end()
