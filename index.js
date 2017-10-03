@@ -1,31 +1,31 @@
 'use strict';
 
 // # Otto
-// Helps deal CAs
+// Helps create elementary Cellular Automata
 
 // Wrap index round edges
 // http://stackoverflow.com/questions/1082917/mod-of-negative-number-is-melting-my-brain
-var myMod = function (a, b) { return a - (b * Math.floor(a / b)); };
+const myMod = (a, b) => a - (b * Math.floor(a / b));
 
 // Rule to binary convert
-var parseRule = function (rule) {
+const parseRule = (rule) => {
   // Base 2 digits
-  var code = Number(rule).toString(2);
+  const code = Number(rule).toString(2);
 
-  var zeros = (1024).toString(2).split('').slice(1).join('');
-  var zerosMax = zeros.length;
+  const zeros = (1024).toString(2).split('').slice(1).join('');
+  const zerosMax = zeros.length;
 
   // No padding past 10
-  var diff = Math.max(zerosMax, zerosMax - code.length);
+  const diff = Math.max(zerosMax, zerosMax - code.length);
 
   // Zero pad ruleset if need be
-  return ("" + zeros + code).substr(diff).split('').reverse()
+  return `${zeros}${code}`.substr(diff).split('').reverse()
 };
 
-// Grid maker
-var otto = function (data) {
+// Master grid maker
+const otto = (data) => {
   // Merge options and defaults
-  var t0to = Object.assign({
+  const papa = Object.assign({
     size: 1,
     rule: 30,
 
@@ -33,12 +33,12 @@ var otto = function (data) {
     ends: [-1, 0, 1],
 
     // Flip middle cell
-    seed: function (v, i, view) { return i === Math.floor(view.length * 0.5); },
+    seed: (v, i, view) => i === Math.floor(view.length * 0.5),
 
     // Index based lookup
-    stat: function (hood, code) {
-      var flags = hood.join('').toString(2);
-      var stats = parseInt(flags, 2);
+    stat: (hood, code) => {
+      const flags = hood.join('').toString(2);
+      const stats = parseInt(flags, 2);
 
       return code[stats]
     }
@@ -46,28 +46,28 @@ var otto = function (data) {
 
   // Rule 90 would be
   // ```['0', '1', '0', '1', '1', '0', '1']```
-  var code = parseRule(t0to.rule);
+  const code = parseRule(papa.rule);
 
   // Calculate state
-  var step = function (v, i, view) {
+  const step = (v, i, view) => {
     // Collect neighboring flags
-    var hood = t0to.ends.map(function (span) {
+    const hood = papa.ends.map((span) => {
       // The index for each neighbor
-      var site = myMod(span + i, view.length);
+      const site = myMod(span + i, view.length);
 
       // The state of each neighbor
       return view[site]
     });
 
-    return t0to.stat(hood, code, v)
+    return papa.stat(hood, code, v)
   };
 
   // Clipboard, zero filled
-  var grid = new Uint8Array(t0to.size);
-  var next = t0to.seed;
+  let grid = new Uint8Array(papa.size);
+  let next = papa.seed;
 
   // Tick
-  return function () {
+  return () => {
     grid = grid.map(next);
     next = step;
 
@@ -76,4 +76,3 @@ var otto = function (data) {
 };
 
 module.exports = otto;
-

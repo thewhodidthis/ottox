@@ -1,5 +1,5 @@
 // # Otto
-// Helps deal CAs
+// Helps create elementary Cellular Automata
 
 // Wrap index round edges
 // http://stackoverflow.com/questions/1082917/mod-of-negative-number-is-melting-my-brain
@@ -20,10 +20,10 @@ const parseRule = (rule) => {
   return `${zeros}${code}`.substr(diff).split('').reverse()
 }
 
-// Grid maker
+// Master grid maker
 const otto = (data) => {
   // Merge options and defaults
-  const t0to = Object.assign({
+  const papa = Object.assign({
     size: 1,
     rule: 30,
 
@@ -44,12 +44,12 @@ const otto = (data) => {
 
   // Rule 90 would be
   // ```['0', '1', '0', '1', '1', '0', '1']```
-  const code = parseRule(t0to.rule)
+  const code = parseRule(papa.rule)
 
   // Calculate state
   const step = (v, i, view) => {
     // Collect neighboring flags
-    const hood = t0to.ends.map((span) => {
+    const hood = papa.ends.map((span) => {
       // The index for each neighbor
       const site = myMod(span + i, view.length)
 
@@ -57,12 +57,12 @@ const otto = (data) => {
       return view[site]
     })
 
-    return t0to.stat(hood, code, v)
+    return papa.stat(hood, code, v)
   }
 
   // Clipboard, zero filled
-  let grid = new Uint8Array(t0to.size)
-  let next = t0to.seed
+  let grid = new Uint8Array(papa.size)
+  let next = papa.seed
 
   // Tick
   return () => {
