@@ -2,7 +2,7 @@
   "name": "@thewhodidthis/otto",
   "version": "1.0.1",
   "description": "Helps create elementary cellular automata",
-  "main": "index.js",
+  "main": "index",
   "module": "index.mjs",
   "homepage": "https://github.com/thewhodidthis/otto#readme",
   "repository": {
