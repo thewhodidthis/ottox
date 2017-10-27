@@ -1,6 +1,6 @@
 {
   "name": "@thewhodidthis/otto",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Helps create elementary cellular automata",
   "main": "index",
   "module": "index.mjs",
