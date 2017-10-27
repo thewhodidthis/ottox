@@ -37,7 +37,7 @@
     "buble": "latest",
     "eslint": "latest",
     "rollup": "latest",
-    "tape": "latest"
+    "tapeless": "latest"
   },
   "author": "sChzs BkgNns <sotirios.bakagiannis@gmail.com> (https://www.thewhodidthis.com)",
   "license": "Unlicense"
