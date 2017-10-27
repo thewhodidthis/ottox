@@ -1,7 +1,7 @@
-## Otto
-> Helps deal CAs
+> Helps deal CA
 
 ### Setup
 ```sh
-npm install thewhodidthis/otto
+# Fetch latest from github
+npm i thewhodidthis/otto
 ```
