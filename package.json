@@ -39,6 +39,10 @@
     "rollup": "latest",
     "tapeless": "latest"
   },
+  "keyowrds": [
+    "cellular-automata",
+    "wolfram"
+  ],
   "author": "sChzs BkgNns <sotirios.bakagiannis@gmail.com> (https://www.thewhodidthis.com)",
   "license": "Unlicense"
 }
