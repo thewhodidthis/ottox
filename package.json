@@ -18,14 +18,10 @@
     "prestart": "eslint index.mjs",
     "start": "rollup -f cjs index.mjs > index.js",
     "preexample": "eslint example/index.es",
-    "example": "cd example; rollup -f iife index.es | buble > index.js",
-    "postexample": "open example/index.html"
+    "example": "cd example; rollup -f iife index.es | buble > index.js"
   },
   "eslintConfig": {
-    "extends": "@thewhodidthis",
-    "globals": {
-      "Uint8Array": true
-    }
+    "extends": "@thewhodidthis"
   },
   "engines": {
     "node": ">=6.4.0",
