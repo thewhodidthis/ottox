@@ -16,7 +16,7 @@
     "pretest": "eslint test.js",
     "test": "node test",
     "prestart": "eslint index.mjs",
-    "start": "rollup -f cjs index.mjs > index.js",
+    "start": "rollup -f cjs index.mjs | buble > index.js",
     "preexample": "eslint example/index.es",
     "example": "cd example; rollup -f iife index.es | buble > index.js"
   },
