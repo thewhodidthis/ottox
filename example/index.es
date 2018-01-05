@@ -4,10 +4,11 @@ const items = document.getElementsByTagName('li')
 const plots = document.getElementsByTagName('canvas')
 
 const lines = []
-const rules = [30, 99, 210, 2123739367, 988197457, 2713874006]
+const rules = [30, 99, 26, 2713874006, 184, 988197457]
 
 const size = 180
 const ends = [-2, -1, 0, 1, 2]
+const seed = () => Math.random() > 0.5
 
 let frames = -1
 
@@ -19,8 +20,9 @@ const draw = () => {
     const fill = ['black', 'white']
     const plot = plots[i].getContext('2d')
     const next = lines[i]
+    const rule = rules[i]
 
-    if (rules[i] < 256) {
+    if (rule < 100) {
       fill.reverse()
     }
 
@@ -48,8 +50,16 @@ rules.forEach((rule, i) => {
 
   item.setAttribute('data-rule', rule)
 
-  const papa = { rule, size }
-  const data = rule < 256 ? papa : Object.assign({ ends }, papa)
+  const data = { rule, size }
+
+  if (rule > 100) {
+    data.seed = seed
+  }
+
+  if (rule > 256) {
+    data.ends = ends
+  }
+
   const line = otto(data)
 
   lines.push(line)

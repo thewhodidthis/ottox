@@ -80,10 +80,11 @@ var items = document.getElementsByTagName('li');
 var plots = document.getElementsByTagName('canvas');
 
 var lines = [];
-var rules = [30, 99, 210, 2123739367, 988197457, 2713874006];
+var rules = [30, 99, 26, 2713874006, 184, 988197457];
 
 var size = 180;
 var ends = [-2, -1, 0, 1, 2];
+var seed = function () { return Math.random() > 0.5; };
 
 var frames = -1;
 
@@ -95,8 +96,9 @@ var draw = function () {
     var fill = ['black', 'white'];
     var plot = plots[i].getContext('2d');
     var next = lines[i];
+    var rule = rules[i];
 
-    if (rules[i] < 256) {
+    if (rule < 100) {
       fill.reverse();
     }
 
@@ -124,8 +126,16 @@ rules.forEach(function (rule, i) {
 
   item.setAttribute('data-rule', rule);
 
-  var papa = { rule: rule, size: size };
-  var data = rule < 256 ? papa : Object.assign({ ends: ends }, papa);
+  var data = { rule: rule, size: size };
+
+  if (rule > 100) {
+    data.seed = seed;
+  }
+
+  if (rule > 256) {
+    data.ends = ends;
+  }
+
   var line = otto(data);
 
   lines.push(line);
