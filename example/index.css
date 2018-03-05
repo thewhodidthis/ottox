@@ -86,7 +86,7 @@ li {
 
 li::after {
   color: #fff;
-  content: attr(data-rule);
+  content: attr(title);
   cursor: pointer;
   display: inline-block;
   font: bold 1.5rem/1 sans-serif;
