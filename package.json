@@ -2,6 +2,10 @@
   "name": "@thewhodidthis/otto",
   "version": "1.0.4",
   "description": "Helps create elementary cellular automata",
+  "keywords": [
+    "cellular-automata",
+    "wolfram"
+  ],
   "homepage": "https://github.com/thewhodidthis/otto#readme",
   "bugs": {
     "url": "https://github.com/thewhodidthis/otto/issues"
@@ -39,9 +43,5 @@
   "engines": {
     "node": ">=6.11.0",
     "npm": ">=3.10.10"
-  },
-  "keyowrds": [
-    "cellular-automata",
-    "wolfram"
-  ]
+  }
 }
