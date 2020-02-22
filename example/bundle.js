@@ -2,7 +2,7 @@
   'use strict';
 
   // # Otto
-  // Helps create elementary Cellular Automata
+  // Helps create elementary cellular automata
 
   // Wrap index round edges
   // http://stackoverflow.com/questions/1082917/mod-of-negative-number-is-melting-my-brain
