@@ -45,15 +45,22 @@ Object.keys(lookup).forEach((rule, j) => {
   }
 
   // Add test title
-  const head = !j ? 'will compute' : undefined
+  const head = j ? null : 'will compute'
 
   // Compare expected sequence with CA data
-  deepEqual(data, series, `Rule ${rule} matches ${getKeyByValue(seqs, series)}`, head)
+  deepEqual
+    .describe(`Rule ${rule} matches ${getKeyByValue(seqs, series)}`, head)
+    .test(data, series)
 })
 
 // Ignores nonsensical arguments
 const next = otto(NaN, null)
 const grid = next()
 
-equal(typeof next, 'function', 'returns a function', 'will default')
-ok(grid instanceof Uint8Array, 'calling returns a typed array')
+equal
+  .describe('returns a function', 'will default')
+  .test(typeof next, 'function')
+
+ok
+  .describe('calling returns a typed array')
+  .test(grid instanceof Uint8Array)
