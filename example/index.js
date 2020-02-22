@@ -65,10 +65,6 @@ rules.forEach((rule, i) => {
   lines.push(line)
 })
 
-if (window !== window.top) {
-  document.documentElement.classList.add('is-iframe')
-}
-
 window.addEventListener('load', () => {
   frames = tick(draw)
 })
