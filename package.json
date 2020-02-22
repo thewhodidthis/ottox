@@ -2,31 +2,33 @@
   "name": "@thewhodidthis/otto",
   "version": "1.0.4",
   "description": "Helps create elementary cellular automata",
-  "main": "index",
-  "module": "index.mjs",
   "homepage": "https://github.com/thewhodidthis/otto#readme",
+  "bugs": {
+    "url": "https://github.com/thewhodidthis/otto/issues"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/thewhodidthis/otto.git"
   },
-  "bugs": {
-    "url": "https://github.com/thewhodidthis/otto/issues"
+  "license": "ISC",
+  "author": "Sotiri Bakagiannis <sotirios.bakagiannis@gmail.com> (http://thewhodidthis.com)",
+  "main": "index",
+  "module": "index.mjs",
+  "directories": {
+    "example": "example"
   },
   "scripts": {
-    "pretest": "eslint test.js",
-    "test": "node test",
+    "preexample": "eslint example/index.js",
+    "example": "cd example; rollup -f iife -o bundle.js index.js",
     "prestart": "eslint index.mjs",
     "start": "rollup -f cjs -o index.js index.mjs",
-    "preexample": "eslint example/index.js",
-    "example": "cd example; rollup -f iife -o bundle.js index.js"
+    "pretest": "eslint test.js",
+    "test": "node test"
   },
   "eslintConfig": {
     "extends": "@thewhodidthis"
   },
-  "engines": {
-    "node": ">=6.11.0",
-    "npm": ">=3.10.10"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@thewhodidthis/eslint-config": "^0.0.17",
     "eslint": "^6.8.0",
@@ -34,10 +36,12 @@
     "rollup-config-x": "^1.0.4",
     "tapeless": "^0.0.9"
   },
+  "engines": {
+    "node": ">=6.11.0",
+    "npm": ">=3.10.10"
+  },
   "keyowrds": [
     "cellular-automata",
     "wolfram"
-  ],
-  "author": "sChzs BkgNns <sotirios.bakagiannis@gmail.com> (https://www.thewhodidthis.com)",
-  "license": "Unlicense"
+  ]
 }
