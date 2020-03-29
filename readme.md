@@ -1,7 +1,6 @@
-> Helps deal CA
+Helps deal cellular automata,
 
-### Setup
 ```sh
-# Fetch latest from github
-npm i thewhodidthis/otto
+# Includes ES and CJS versions
+npm i @thewhodidthis/otto
 ```
