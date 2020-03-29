@@ -1,4 +1,4 @@
-Helps deal cellular automata,
+Helps create cellular automata,
 
 ```sh
 # Includes ES and CJS versions
