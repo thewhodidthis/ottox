@@ -31,7 +31,7 @@ const otto = (data) => {
     ends: [-1, 0, 1],
 
     // Flip middle cell
-    seed: (v, i, view) => i === Math.floor(view.length * 0.5),
+    seed: (_, i, view) => i === Math.floor(view.length * 0.5),
 
     // Index based lookup
     stat: (hood, code) => {

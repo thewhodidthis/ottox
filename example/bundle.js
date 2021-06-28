@@ -13,7 +13,7 @@
       size: 1,
       rule: 30,
       ends: [-1, 0, 1],
-      seed: (v, i, view) => i === Math.floor(view.length * 0.5),
+      seed: (_, i, view) => i === Math.floor(view.length * 0.5),
       stat: (hood, code2) => {
         const flags = hood.join("").toString(2);
         const stats = parseInt(flags, 2);
