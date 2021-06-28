@@ -10,14 +10,14 @@ const parseRule = (rule) => {
   // Base 2 digits
   const code = Number(rule).toString(2)
 
-  const zeros = (1024).toString(2).split('').slice(1).join('')
+  const zeros = (1024).toString(2).split("").slice(1).join("")
   const zerosMax = zeros.length
 
   // No padding past 10
   const diff = Math.max(zerosMax, zerosMax - code.length)
 
   // Zero pad ruleset if need be
-  return `${zeros}${code}`.substr(diff).split('').reverse()
+  return `${zeros}${code}`.substr(diff).split("").reverse()
 }
 
 // Master grid maker
@@ -35,11 +35,11 @@ const otto = (data) => {
 
     // Index based lookup
     stat: (hood, code) => {
-      const flags = hood.join('').toString(2)
+      const flags = hood.join("").toString(2)
       const stats = parseInt(flags, 2)
 
       return code[stats]
-    }
+    },
   }, data)
 
   // Rule 90 would be

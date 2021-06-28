@@ -1,7 +1,7 @@
-import otto from '../main.js'
+import otto from "../main.js"
 
-const items = document.getElementsByTagName('li')
-const plots = document.getElementsByTagName('canvas')
+const items = document.getElementsByTagName("li")
+const plots = document.getElementsByTagName("canvas")
 
 const lines = []
 const rules = [30, 99, 26, 2713874006, 184, 988197457]
@@ -17,8 +17,8 @@ const stop = id => window.cancelAnimationFrame(id)
 
 const draw = () => {
   for (let i = 0, k = rules.length; i < k; i += 1) {
-    const fill = ['black', 'white']
-    const plot = plots[i].getContext('2d')
+    const fill = ["black", "white"]
+    const plot = plots[i].getContext("2d")
     const next = lines[i]
     const rule = rules[i]
 
@@ -48,7 +48,7 @@ const draw = () => {
 rules.forEach((rule, i) => {
   const item = items[i]
 
-  item.setAttribute('title', rule)
+  item.setAttribute("title", rule)
 
   const data = { rule, size }
 
@@ -65,6 +65,6 @@ rules.forEach((rule, i) => {
   lines.push(line)
 })
 
-window.addEventListener('load', () => {
+window.addEventListener("load", () => {
   frames = tick(draw)
 })

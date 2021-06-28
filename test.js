@@ -1,5 +1,5 @@
-import { assert, report } from 'tapeless'
-import otto from './main.js'
+import { assert, report } from "tapeless"
+import otto from "./main.js"
 
 const { ok, equal } = assert
 
@@ -45,7 +45,7 @@ Object.keys(lookup).forEach((rule, j) => {
   }
 
   // Add test title
-  const head = j ? null : 'will compute'
+  const head = j ? null : "will compute"
 
   // Compare expected sequence with CA data
   equal
@@ -58,11 +58,11 @@ const next = otto(NaN, null)
 const grid = next()
 
 equal
-  .describe('returns a function', 'will default')
-  .test(typeof next, 'function')
+  .describe("returns a function", "will default")
+  .test(typeof next, "function")
 
 ok
-  .describe('calling returns a typed array')
+  .describe("calling returns a typed array")
   .test(grid instanceof Uint8Array)
 
 report()
