@@ -4,11 +4,11 @@ Helps create cellular automata.
 
 ## setup
 
-Fetch latest from the _npm_ registry:
+Download from the _npm_ registry:
 
 ```sh
-# Includes ESM and CJS versions
-npm i @thewhodidthis/otto
+# Add to package.json
+npm install @thewhodidthis/otto
 ```
 
 ## see also
