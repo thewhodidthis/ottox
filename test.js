@@ -1,7 +1,7 @@
-'use strict'
+import { assert, report } from 'tapeless'
+import otto from './main.js'
 
-const { ok, deepEqual, equal } = require('tapeless')
-const otto = require('./')
+const { ok, equal } = assert
 
 // Get object key by value
 // http://stackoverflow.com/questions/9907419/javascript-object-get-key-by-value
@@ -48,9 +48,9 @@ Object.keys(lookup).forEach((rule, j) => {
   const head = j ? null : 'will compute'
 
   // Compare expected sequence with CA data
-  deepEqual
+  equal
     .describe(`Rule ${rule} matches ${getKeyByValue(seqs, series)}`, head)
-    .test(data, series)
+    .test(JSON.stringify(data), JSON.stringify(series))
 })
 
 // Ignores nonsensical arguments
@@ -64,3 +64,5 @@ equal
 ok
   .describe('calling returns a typed array')
   .test(grid instanceof Uint8Array)
+
+report()
